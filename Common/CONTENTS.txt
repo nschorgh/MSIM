@@ -20,12 +20,6 @@ conductionT.f90:
 	1D thermal conduction with heterogeneous thermal properties and 
 	upper temperature boundary condition, semi-implicit solver
 
-conductionQ2.f90:
-	version of conductionQ that precomputes coefficients
-
-conductionT2.f90:
-	version of conductionT that precomputes coefficients
-
 derivs.f90: 
 	first and second derivatives on irregular grid
 	
@@ -53,9 +47,6 @@ tridag.for:
 julday.for: 
 	Julian date, from Numerical Recipes (C), but without the pause statement
 
-ran2.for: 
-	uniform random number generator from Numerical Recipes (C); changed
-	real to real*8
 
 
 
