@@ -1,10 +1,10 @@
-Mars Subsurface Ice Model (M-SIM)
-=================================
+Mars Subsurface Ice Model (MSIM)
+================================
 
 *by Norbert Schorghofer*
 
 
-This program collection contains:
+The MSIM program collection contains:
 
 * Semi-implicit one-dimensional thermal model for planetary surfaces (Crank-Nicolson with nonlinear b.c.)  
 * Explicit subsurface vapor diffusion and ice deposition model (1D diffusion, sublimation, adsorption)  
@@ -99,10 +99,17 @@ Common/tridag.for
 
 ---
 
-NOTE: Third party source code from Numerical Recipes is covered by a separate copyright. These are files ending with .for.  A few code snippets from other sources are also used, as documented in the source code.
+### Notes
+
+Third party source code from Numerical Recipes is covered by a separate copyright. These are files ending with .for.  A few code snippets from other sources are also used, as documented in the source code.
 
 
-### ACKNOWLEDGMENTS
+### History
+
+Most of this program collection was written 2001-2009, as part of a series of papers about subsurface-atmosphere vapor exchange on Mars. It was then hosted on a website and later moved to GitHub as part of the [Planetary-Code-Collection](https://github.com/nschorgh/Planetary-Code-Collection). Since 2022 MSIM has its own GitHub repository.
+
+
+### Acknowledgments
 
 2010, 2005: Thanks to Oded Aharonson for improvements on mars_mapi2p and a better treatment of the frost/no-frost surface boundary condition.
 
