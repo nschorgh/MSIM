@@ -15,13 +15,13 @@ The MSIM program collection contains:
 
 ### Mars Thermal Model
 
-This thermal model solves the heat equation in the top few meters of the subsurface, using direct solar energy and atmospheric irradiance as energy input on the surface.  It also includes CO<sub>2</sub> frost, and is used to calculate realistic surface temperatures on Mars.  
+This thermal model solves the heat equation in the top few meters of the subsurface, using direct solar energy and sky irradiance as energy input on the surface.  It also includes CO<sub>2</sub> frost, and is used to calculate realistic surface temperatures on Mars.  
 
-The solver for the one-dimensional heat equation is semi-implicit, which implies that the size of the time step is not limited by the spatial discretization, as it would be for simpler heat equation solvers.  As a result, the model is ultra-fast.
+The solver for the one-dimensional heat equation is semi-implicit, which implies that the size of the time step is not limited by the spatial discretization, as it would be for simpler heat equation solvers.  As a result, the model is ultra-fast. For example, `mars_thermal1d.f` takes 100 steps per sol and calculates temperatures for 10 Mars years, on the surface and at 80 depths, in 1.3 seconds. (As far as I am aware, this is still by far the fastest Mars thermal model available.)
 The finite-difference method is flux conservative even on an irregularly spaced vertical grid and the thermal properties of the soil can vary spatially and with time.  
 
 The standard configuration is for a horizontal unobstructed surface, but planar slopes can also be modeled.
-The orbit of Mars can be the present-day orbit or a past configuration.  
+The orbit of Mars can be for the present-day or the past.  
 
 *Documentation: User Guide Part 1*  
 
@@ -30,7 +30,7 @@ The orbit of Mars can be the present-day orbit or a past configuration.
 
 This model solves the one-dimensional vapor diffusion equation in a porous medium,
 including phase transitions (sublimation and adsorption), which implies the equation is non-linear.
-Specifically, it simulates water vapor diffusion through the CO2-filled pore spaces in martian regolith.
+Specifically, it simulates water vapor diffusion through the CO<sub>2</sub>-filled pore spaces in martian regolith.
 The same model can also be used (and has been used) for laboratory setups under analogous environments.  
 
 *Documentation: User Guide Part 2  
@@ -42,9 +42,7 @@ Documentation: [Schorghofer, N. & Aharonson, O. (2005), Appendices](https://doi.
 
 The theory of subsurface-atmosphere vapor exchange leads to the concept of an equilibrium ice table, a depth where the (time-averaged) saturation vapor pressure of H<sub>2</sub>O matches the (time-averaged) vapor density in the atmosphere immediately above the surface.  
 
-The Mars thermal model is run until it is thermally equilibrated, and then annual-mean vapor densities are evaluated to determine whether and at what depth a vapor equilibrium is reached. Ice changes the thermal properties of the ground, so the thermal model needs to be re-run to iteratively determine the final depth of the equilibrium ice table.  
-
-As the Mars thermal model, this is available for horizontal and tilted planar surfaces.  
+A Mars thermal model is run until equilibrated, and then annual mean vapor densities are evaluated to determine whether and at what depth a vapor equilibrium is reached. Ice changes the thermal properties of the ground, so the thermal model needs to be re-run to iteratively determine the final depth of the equilibrium ice table.  
 
 *Documentation: User Guide Section 3.1  
 Documentation: [Schorghofer, N. & Aharonson, O. (2005), Appendices](https://doi.org/10.1029/2004JE002350)*  
