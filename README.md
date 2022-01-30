@@ -15,10 +15,10 @@ The MSIM program collection contains:
 
 ### Mars Thermal Model
 
-This thermal model solves the heat equation in the top few meters of the subsurface, using direct solar energy and atmospheric irradiance as energy input on the surface.  It also includes CO<sub>2</sub> frost.  
+This thermal model solves the heat equation in the top few meters of the subsurface, using direct solar energy and atmospheric irradiance as energy input on the surface.  It also includes CO<sub>2</sub> frost, and is used to calculate realistic surface temperatures on Mars.  
 
-The solver for the one-dimensional heat equation is semi-implicit, which implies that the size of the time step is not limited by the size of the spatial grid, as it would be for simpler heat equation solvers.
-The finite-difference method is flux conservative even on an irregularly spaced grid and the thermal properties of the soil can vary spatially and with time.  
+The solver for the one-dimensional heat equation is semi-implicit, which implies that the size of the time step is not limited by the spatial discretization, as it would be for simpler heat equation solvers.  As a result, the model is ultra-fast.
+The finite-difference method is flux conservative even on an irregularly spaced vertical grid and the thermal properties of the soil can vary spatially and with time.  
 
 The standard configuration is for a horizontal unobstructed surface, but planar slopes can also be modeled.
 The orbit of Mars can be the present-day orbit or a past configuration.  
@@ -28,39 +28,43 @@ The orbit of Mars can be the present-day orbit or a past configuration.
 
 ### Vapor Diffusion Model
 
-This model solves the one-dimensional vapor diffusion equation in a porous medium, such as water vapor diffusion through the CO2-filled pore spaces in martian regolith, including phase transitions (sublimation and adsorption), which implies the equation is non-linear. The same model can also be used (and has been used) for laboratory setups under analogous environments.  
+This model solves the one-dimensional vapor diffusion equation in a porous medium,
+including phase transitions (sublimation and adsorption), which implies the equation is non-linear.
+Specifically, it simulates water vapor diffusion through the CO2-filled pore spaces in martian regolith.
+The same model can also be used (and has been used) for laboratory setups under analogous environments.  
 
 *Documentation: User Guide Part 2  
-Documentation: Schorghofer, N. & Aharonson, O. (2005) J. Geophys. Res. 110, E05003, Appendices*  
-Mars/Misc/  (an animation for illustration)  
+Documentation: [Schorghofer, N. & Aharonson, O. (2005), Appendices](https://doi.org/10.1029/2004JE002350)*  
+`Mars/Misc/`  (an animation for illustration)  
 
 
 ### Equilibrium Ice Table
 
 The theory of subsurface-atmosphere vapor exchange leads to the concept of an equilibrium ice table, a depth where the (time-averaged) saturation vapor pressure of H<sub>2</sub>O matches the (time-averaged) vapor density in the atmosphere immediately above the surface.  
 
-The Mars thermal model is run until it is thermally equilibrated, and then annual-mean vapor densities are evaluated to determine whether and at what depth a vapor equilibrium is reached. Since ice changes the thermal properties of the ground, the thermal model needs to be re-run to iteratively determine the true depth of the equilibrium ice table.  
+The Mars thermal model is run until it is thermally equilibrated, and then annual-mean vapor densities are evaluated to determine whether and at what depth a vapor equilibrium is reached. Ice changes the thermal properties of the ground, so the thermal model needs to be re-run to iteratively determine the final depth of the equilibrium ice table.  
+
+As the Mars thermal model, this is available for horizontal and tilted planar surfaces.  
 
 *Documentation: User Guide Section 3.1  
-Documentation: Schorghofer, N. & Aharonson, O. (2005) J. Geophys. Res. 110, E05003*  
+Documentation: [Schorghofer, N. & Aharonson, O. (2005), Appendices](https://doi.org/10.1029/2004JE002350)*  
 
 
 ### Mars Long-Term Thermal Model
 
 This is also a Mars thermal model, but it is typically re-run every 1000 years over millions of years as the orbital and spin configuration of Mars changes.
-`insol_driver.f90` only evaluates annual mean insolation (incoming solar radiation) whereas
-`tempr_driver.f90` also calculates temperatures by solving the heat equation in the subsurface.  
+`insol_driver.f90` evaluates only the annual mean insolation (incoming solar radiation), whereas
+`tempr_driver.f90` calculates temperatures by solving the heat equation in the subsurface.  
+(The latter is a trivial example of the concept of asynchronous coupling, because small and large time steps are involved.)  
 
-The latter is a simple example of an asynchronously-coupled model, because small and large time steps are involved.  
-
-Mars/MilankOutput/  (surface temperatures from last 21Myr)  
+`Mars/MilankOutput/`  (surface temperatures from last 21Myr)  
 
 
 ### Fast (asynchronously-coupled) Method for Subsurface Ice Dynamics
 
-This dynamical model of ice evolution goes beyond the concept of the equilibrium ice table and calculates the amount of ice lost from or gained within the porous subsurface on Mars. To accomplish that, without explicitly solving the nonlinear vapor transport equations, which would be computationally far too slow, it uses time-averaged equation and interfaces. The method involves some sophistication and is described in a dedicated paper by [Schorghofer (2010)](http://dx.doi.org/10.1016/j.icarus.2010.03.022).  A thermal model run with typically 50 steps per sol is coupled with an ice evolution run typically in steps of 1000 years.  
+This dynamical model of ice evolution goes beyond the concept of the equilibrium ice table and calculates the amount of ice lost from or gained within the porous subsurface on Mars as a result of vapor exchange with the atmsophere. To accomplish that, without the computationally slow method of explicitly solving the nonlinear vapor transport equations, it uses time-averaged trasnport equations. The method involves some sophistication and is described in a dedicated paper by [Schorghofer (2010)](http://dx.doi.org/10.1016/j.icarus.2010.03.022).  A thermal model with typically 50 steps per sol is coupled with an ice evolution run typically in steps of 1000 years.  
 
-A variant of this model `exper_fast.f90` is designed for laboratory experiment.  
+A variant of this model `exper_fast.f90` is designed for a laboratory experiment.  
 
 *Documentation: Schorghofer, N. (2010) Icarus 208, 598-607*  
 
@@ -79,9 +83,9 @@ Most of this program collection was written 2001-2009, as part of a series of pa
 
 ### Acknowledgments
 
-2010, 2005: Thanks to Oded Aharonson for improvements on mars_mapi2p and a better treatment of the frost/no-frost surface boundary condition.
-
 2006: Troy Hudson discovered a grid-point offset in conductionT and conductionQ, which has been corrected.
+
+2005: Thanks to Oded Aharonson for improvements on mars_mapi2p and a better treatment of the frost/no-frost surface boundary condition.
 
 2005: Thanks to Mischa Kreslavsky for providing formulas for energy balance on a planar slope.
 
