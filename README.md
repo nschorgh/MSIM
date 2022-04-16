@@ -12,59 +12,44 @@ The MSIM program collection contains:
 * Asynchronously coupled method for subsurface-atmosphere vapor exchange on Mars
 
 
-
 ### Mars Thermal Model
 
-This thermal model solves the heat equation in the top few meters of the subsurface, using direct solar energy and sky irradiance as energy input on the surface.  It also includes CO<sub>2</sub> frost, and is used to calculate realistic surface temperatures on Mars.  
-
-The solver for the one-dimensional heat equation is semi-implicit, which implies that the size of the time step is not limited by the spatial discretization, as it would be for simpler heat equation solvers.  As a result, the model is ultra-fast. For example, `mars_thermal1d.f` takes 100 steps per sol and calculates temperatures for 10 Mars years, on the surface and at 80 depths, in 1.3 seconds. (As far as I am aware, this is still by far the fastest Mars thermal model available.)
-The finite-difference method is flux conservative even on an irregularly spaced vertical grid and the thermal properties of the soil can vary spatially and with time.  
-
-The standard configuration is for a horizontal unobstructed surface, but planar slopes can also be modeled.
-The orbit of Mars can be for the present-day or the past.  
+This model calculates realistic surface temperatures on Mars. The heat equation is solved in the top few meters of the subsurface, using direct solar energy and sky irradiance as energy inputs.  The surface energy balance also includes the latent heat of CO<sub>2</sub> frost. 
+The finite-difference method is flux-conservative even on an irregularly spaced grid and the thermal properties of the soil can vary with depth and time.
+The solver for the one-dimensional heat equation is semi-implicit, which implies that the size of the time step is not limited by the spatial discretization, as it would be for simpler heat equation solvers.  For example, `mars_thermal1d.f` takes 100 steps per sol and calculates temperatures for 10 Mars years on the surface and at 80 depths in 1.3 seconds. As far as I am aware, this is still the fastest Mars thermal model available. 
+The orbit of Mars can be for the present-day or the past. The standard configuration is for a horizontal unobstructed surface, but planar slopes can also be modeled.  
 
 *Documentation: User Guide Part 1*  
+`Mars/MilankOutput/` contains surface temperature outputs for the last 21 Myr in intervals of 1 kyr.   
 
 
 ### Vapor Diffusion Model
 
-This model solves the one-dimensional vapor diffusion equation in a porous medium,
-including phase transitions (sublimation and adsorption), which implies the equation is non-linear.
-Specifically, it simulates water vapor diffusion through the CO<sub>2</sub>-filled pore spaces in martian regolith.
-The same model can also be used (and has been used) for laboratory setups under analogous environments.  
+This model solves the one-dimensional vapor diffusion equation in a porous medium, including phase transitions (sublimation and adsorption), which makes the partial differential equation non-linear. Specifically, it simulates H<sup>2</sup>O vapor diffusion through the CO<sub>2</sub>-filled pore spaces in martian regolith. Diffusion can be outward or inward. The same model can also be used (and has been used) for laboratory experiments in physically analogous environments.  
 
 *Documentation: User Guide Part 2  
-Documentation: [Schorghofer, N. & Aharonson, O. (2005), Appendices](https://doi.org/10.1029/2004JE002350)*  
-`Mars/Misc/`  (an animation for illustration)  
+Documentation: [Schorghofer & Aharonson (2005), Appendix B](https://doi.org/10.1029/2004JE002350)*  
+`Mars/Misc/` contains an animation of "vapor pumping" for illustration.
 
 
 ### Equilibrium Ice Table
 
-The theory of subsurface-atmosphere vapor exchange leads to the concept of an equilibrium ice table, a depth where the (time-averaged) saturation vapor pressure of H<sub>2</sub>O matches the (time-averaged) vapor density in the atmosphere immediately above the surface.  
+The theory of subsurface-atmosphere vapor exchange leads to the concept of an equilibrium ice table, a depth where the (time-averaged) saturation vapor pressure of H<sub>2</sub>O matches the (time-averaged) vapor density in the atmosphere immediately above the surface. A Mars thermal model is run until equilibrated, and then annual mean vapor densities are evaluated to determine whether and at what depth a vapor equilibrium exists. Ice changes the thermal properties of the ground, so the thermal model is re-run to determine the final depth of the equilibrium ice table.  
 
-A Mars thermal model is run until equilibrated, and then annual mean vapor densities are evaluated to determine whether and at what depth a vapor equilibrium is reached. Ice changes the thermal properties of the ground, so the thermal model needs to be re-run to iteratively determine the final depth of the equilibrium ice table.  
-
-*Documentation: User Guide Section 3.1  
-Documentation: [Schorghofer, N. & Aharonson, O. (2005), Appendices](https://doi.org/10.1029/2004JE002350)*  
+*Documentation: [Schorghofer & Aharonson (2005)](https://doi.org/10.1029/2004JE002350)*  
 
 
 ### Mars Long-Term Thermal Model
 
-This is also a Mars thermal model, but it is typically re-run every 1000 years over millions of years as the orbital and spin configuration of Mars changes.
-`insol_driver.f90` evaluates only the annual mean insolation (incoming solar radiation), whereas
-`tempr_driver.f90` calculates temperatures by solving the heat equation in the subsurface.  
+This is also a Mars thermal model, but it is typically re-run every 1000 years over millions of years as the orbital and spin configuration of Mars changes. `insol_driver.f90` evaluates only the annual mean insolation (incoming solar radiation), whereas `tempr_driver.f90` calculates temperatures by solving the heat equation in the subsurface.
 (The latter is a trivial example of the concept of asynchronous coupling, because small and large time steps are involved.)  
 
-`Mars/MilankOutput/`  (surface temperatures from last 21Myr)  
+`Mars/MilankOutput/` (surface temperatures from last 21Myr)
 
 
 ### Fast (asynchronously-coupled) Method for Subsurface Ice Dynamics
 
-This dynamical model of ice evolution goes beyond the concept of the equilibrium ice table and calculates the amount of ice lost from or gained within the porous subsurface on Mars as a result of vapor exchange with the atmsophere. To accomplish that, without the computationally slow method of explicitly solving the nonlinear vapor transport equations, it uses time-averaged trasnport equations. The method involves some sophistication and is described in a dedicated paper by [Schorghofer (2010)](http://dx.doi.org/10.1016/j.icarus.2010.03.022).  A thermal model with typically 50 steps per sol is coupled with an ice evolution run typically in steps of 1000 years.  
-
-A variant of this model `exper_fast.f90` is designed for a laboratory experiment.  
-
-*Documentation: Schorghofer, N. (2010) Icarus 208, 598-607*  
+This dynamical model of ice evolution goes beyond the concept of the equilibrium ice table and calculates the amount of ice lost from or gained within the porous subsurface on Mars as a result of vapor exchange with the atmosphere. To accomplish that, without the computationally slow method of explicitly solving the nonlinear vapor transport equations, it uses time-averaged transport equations. The method involves some complexities and is described in a dedicated paper by [Schorghofer (2010)](http://dx.doi.org/10.1016/j.icarus.2010.03.022).  
 
 
 ---
