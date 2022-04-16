@@ -20,7 +20,6 @@ The solver for the one-dimensional heat equation is semi-implicit, which implies
 The orbit of Mars can be for the present-day or the past. The standard configuration is for a horizontal unobstructed surface, but planar slopes can also be modeled.  
 
 *Documentation: User Guide Part 1*  
-`Mars/MilankOutput/` contains surface temperature outputs for the last 21 Myr in intervals of 1 kyr.   
 
 
 ### Vapor Diffusion Model
@@ -54,21 +53,21 @@ This dynamical model of ice evolution goes beyond the concept of the equilibrium
 
 ---
 
-### Notes
-
-Third party source code from Numerical Recipes is covered by a separate copyright. These are files ending with .for.  A few code snippets from other sources are also used, as documented in the source code.
-
-
 ### History
 
 Most of this program collection was written 2001-2009, as part of a series of papers about subsurface-atmosphere vapor exchange on Mars. It was then hosted on a website and later moved to GitHub as part of the [Planetary-Code-Collection](https://github.com/nschorgh/Planetary-Code-Collection). Since 2022 MSIM has its own GitHub repository.
+
+
+### Notes
+
+Third party source code from Numerical Recipes is covered by a separate copyright. These are files ending with .for.  A few code snippets from other sources are also used, as documented in the source code.
 
 
 ### Acknowledgments
 
 2006: Troy Hudson discovered a grid-point offset in conductionT and conductionQ, which has been corrected.
 
-2005: Thanks to Oded Aharonson for improvements on mars_mapi2p and a better treatment of the frost/no-frost surface boundary condition.
+2005: Thanks to Oded Aharonson for improvements on mars_mapi2p.
 
 2005: Thanks to Mischa Kreslavsky for providing formulas for energy balance on a planar slope.
 
