@@ -6,8 +6,8 @@ Mars Subsurface Ice Model (MSIM)
 
 The MSIM program collection contains:
 
-* Semi-implicit one-dimensional thermal model for the surface of Mars (Crank-Nicolson solver with Stefan-Boltzmann radiation us upper boundary condition)  
-* Explicit subsurface vapor diffusion and ice deposition model (1D diffusion, sublimation, adsorption)  
+* One-dimensional thermal model for the surface of Mars (Crank-Nicolson solver with Stefan-Boltzmann radiation us upper boundary condition)  
+* Subsurface vapor diffusion and ice deposition model (1D diffusion, sublimation, adsorption)  
 * Equilibrium ice table on Mars
 * Asynchronously coupled method for subsurface-atmosphere vapor exchange on Mars
 
@@ -24,7 +24,8 @@ The orbit of Mars can be for the present-day or the past. The standard configura
 
 ### Vapor Diffusion Model
 
-This model solves the one-dimensional vapor diffusion equation in a porous medium, including phase transitions (sublimation and adsorption), which makes the partial differential equation non-linear. Specifically, it simulates H<sup>2</sup>O vapor diffusion through the CO<sub>2</sub>-filled pore spaces in martian regolith. Diffusion can be outward or inward. The same model can also be used (and has been used) for laboratory experiments in physically analogous environments.  
+This model solves the one-dimensional vapor diffusion equation in a porous medium, including phase transitions (sublimation and adsorption).  Specifically, it simulates H<sup>2</sup>O vapor diffusion through the CO<sup>2</sup>-filled pore spaces in martian regolith. Diffusion can be outward or inward.
+The phase transitions make the partial differential equation non-linear, so an explicit time step is used. The same model can also be used (and has been used) for laboratory experiments in physically analogous environments.  
 
 *Documentation: User Guide Part 2  
 Documentation: [Schorghofer & Aharonson (2005), Appendix B](https://doi.org/10.1029/2004JE002350)*  
@@ -33,7 +34,7 @@ Documentation: [Schorghofer & Aharonson (2005), Appendix B](https://doi.org/10.1
 
 ### Equilibrium Ice Table
 
-The theory of subsurface-atmosphere vapor exchange leads to the concept of an equilibrium ice table, a depth where the (time-averaged) saturation vapor pressure of H<sub>2</sub>O matches the (time-averaged) vapor density in the atmosphere immediately above the surface. A Mars thermal model is run until equilibrated, and then annual mean vapor densities are evaluated to determine whether and at what depth a vapor equilibrium exists. Ice changes the thermal properties of the ground, so the thermal model is re-run to determine the final depth of the equilibrium ice table.  
+The theory of subsurface-atmosphere vapor exchange leads to the concept of an equilibrium ice table, a depth where the (time-averaged) saturation vapor pressure of H<sub>2</sub>O matches the (time-averaged) vapor density in the atmosphere immediately above the surface. A Mars thermal model is run until equilibrated, and then annual mean vapor densities are evaluated to determine whether and at what depth a vapor equilibrium exists. Ice changes the thermal properties of the ground, so the thermal model is re-run multiple times to determine the final depth of the equilibrium ice table.  
 
 *Documentation: [Schorghofer & Aharonson (2005)](https://doi.org/10.1029/2004JE002350)*  
 `Mars/EqualMaps/` contains data produced with this model.  
@@ -56,7 +57,7 @@ This dynamical model of ice evolution goes beyond the concept of the equilibrium
 
 ### History
 
-Most of the MSIM program collection was written 2001-2009, as part of a series of papers about subsurface-atmosphere vapor exchange on Mars. It was then hosted on a website and later moved to GitHub as part of the [Planetary-Code-Collection](https://github.com/nschorgh/Planetary-Code-Collection). MSIM has its own GitHub repository since 2022.
+Most of the MSIM program collection was written 2001-2009, as part of a series of papers about subsurface-atmosphere vapor exchange on Mars. It was then hosted on a website and later moved to GitHub as part of the [Planetary-Code-Collection](https://github.com/nschorgh/Planetary-Code-Collection). MSIM has its own [GitHub repository](https://github.com/nschorgh/MSIM) since 2022.
 
 
 ### Notes
