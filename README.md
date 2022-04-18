@@ -36,6 +36,7 @@ Documentation: [Schorghofer & Aharonson (2005), Appendix B](https://doi.org/10.1
 The theory of subsurface-atmosphere vapor exchange leads to the concept of an equilibrium ice table, a depth where the (time-averaged) saturation vapor pressure of H<sub>2</sub>O matches the (time-averaged) vapor density in the atmosphere immediately above the surface. A Mars thermal model is run until equilibrated, and then annual mean vapor densities are evaluated to determine whether and at what depth a vapor equilibrium exists. Ice changes the thermal properties of the ground, so the thermal model is re-run to determine the final depth of the equilibrium ice table.  
 
 *Documentation: [Schorghofer & Aharonson (2005)](https://doi.org/10.1029/2004JE002350)*  
+`Mars/EqualMaps/` contains data produced with this model.  
 
 
 ### Mars Long-Term Thermal Model
@@ -48,19 +49,19 @@ This is also a Mars thermal model, but it is typically re-run every 1000 years o
 
 ### Fast (asynchronously-coupled) Method for Subsurface Ice Dynamics
 
-This dynamical model of ice evolution goes beyond the concept of the equilibrium ice table and calculates the amount of ice lost from or gained within the porous subsurface on Mars as a result of vapor exchange with the atmosphere. To accomplish that, without the computationally slow method of explicitly solving the nonlinear vapor transport equations, it uses time-averaged transport equations. The method involves some complexities and is described in a dedicated paper by [Schorghofer (2010)](http://dx.doi.org/10.1016/j.icarus.2010.03.022).  
+This dynamical model of ice evolution goes beyond the concept of the equilibrium ice table and calculates the amount of ice lost from or gained within the porous subsurface as a result of vapor exchange with the atmosphere. To accomplish that, without the computationally slow approach of explicitly solving the nonlinear vapor transport equations, it uses time-averaged transport equations. This numerical method involves some complexities and is described in a dedicated paper by [Schorghofer (2010)](http://dx.doi.org/10.1016/j.icarus.2010.03.022).  
 
 
 ---
 
 ### History
 
-Most of this program collection was written 2001-2009, as part of a series of papers about subsurface-atmosphere vapor exchange on Mars. It was then hosted on a website and later moved to GitHub as part of the [Planetary-Code-Collection](https://github.com/nschorgh/Planetary-Code-Collection). Since 2022 MSIM has its own GitHub repository.
+Most of the MSIM program collection was written 2001-2009, as part of a series of papers about subsurface-atmosphere vapor exchange on Mars. It was then hosted on a website and later moved to GitHub as part of the [Planetary-Code-Collection](https://github.com/nschorgh/Planetary-Code-Collection). MSIM has its own GitHub repository since 2022.
 
 
 ### Notes
 
-Third party source code from Numerical Recipes is covered by a separate copyright. These are files ending with .for.  A few code snippets from other sources are also used, as documented in the source code.
+Third party source code from Numerical Recipes is covered by a separate copyright. These are files ending with .for. 
 
 
 ### Acknowledgments

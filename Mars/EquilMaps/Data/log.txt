@@ -1,0 +1,38 @@
+% Notes from log book to equilibrium ice table calculations for Mars
+% described in Schorghofer & Aharonson, JGR 110, E05003 (2005) doi:10.1029/2004JE002350
+% by Norbert Schorghofer
+%
+% Columns in mapgrid* are:
+% longitude, latitude, albedo, thermal inertia (tiu), frostpoint (K), depth to equilibrium ice table (m)
+% mapgrid.* are inputs; mapgrid2.* are outputs
+%
+% The 'standard' equilibrium ice table results are in mapgrid2.6b__40 (40% ice fraction)
+% Figure 8 in the paper is based on mapgrid2.6b__40 and mapgrid2.7c__40, where the latter merely represents a latitude band calculated at higher latitude resolution
+%
+
+
+.6: parameters are in info.6*
+mapgrid.6a   5x5 degree lon/lat resolution
+mapgrid.6b   5x1 degree lon/lat resolution
+mapgrid.6z   zonally averaged, 1 degree resolution
+mapgrid.6x   meridional cut produced from grepping mapgrid.6b
+mapgrid.6t as .6a, but uniform Tfrost=198K
+mapgrid.6r   zonally averaged, 0.5 degree resolution
+
+mapgrid.6z_uniform   uniform properties alb=0.199, ti=228.1, Tf=198
+mapgrid.6z_albonly   only albedo varies
+mapgrid.6z_tionly    only thermal inertia varies
+mapgrid.6z_tfonly    only frost point temperature varies
+mapgrid.6z_tfuniform	albedo and thermal inertia vary, but not frost point
+
+mapgrid2.*__xx  xx = percent ice content, no geothermal heating
+mapgrid2.*_xxg  xx = percent ice content, with geothermal heatin
+
+
+.7: same as .6, but (usually) with finer latitude resolution
+mapgrid.7b    5x1 degree lon/lat resolution (rerun of .6b)
+mapgrid.7c    5x0.25 degree lon/lat resolution
+mapgrid.7t    Tfrost=198K everywhere, otherwise as mapgrid.7b
+mapgrid.7x    meridional cut produced from grepping mapgrid.7b
+
+
