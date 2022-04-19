@@ -24,7 +24,7 @@ The orbit of Mars can be for the present-day or the past. The standard configura
 
 ### Vapor Diffusion Model
 
-This model solves the one-dimensional vapor diffusion equation in a porous medium, including phase transitions (sublimation and adsorption).  Specifically, it simulates H<sup>2</sup>O vapor diffusion through the CO<sup>2</sup>-filled pore spaces in martian regolith. Diffusion can be outward or inward.
+This model solves the one-dimensional vapor diffusion equation in a porous medium, including phase transitions (sublimation and adsorption).  Specifically, it simulates H<sub>2</sub>O vapor diffusion through the CO<sub>2</sub>-filled pore spaces in martian regolith. Diffusion can be outward or inward.
 The phase transitions make the partial differential equation non-linear, so an explicit time step is used. The same model can also be used (and has been used) for laboratory experiments in physically analogous environments.  
 
 *Documentation: User Guide Part 2  
