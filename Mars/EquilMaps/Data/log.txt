@@ -1,13 +1,13 @@
-% Notes from log book to equilibrium ice table calculations for Mars
-% described in Schorghofer & Aharonson, JGR 110, E05003 (2005) doi:10.1029/2004JE002350
-% by Norbert Schorghofer
+% Notes from log book to equilibrium ice table calculations for Mars by Norbert Schorghofer
+% Model results are published in Schorghofer & Aharonson, JGR 110, E05003 (2005) doi:10.1029/2004JE002350
 %
 % Columns in mapgrid* are:
 % longitude, latitude, albedo, thermal inertia (tiu), frostpoint (K), depth to equilibrium ice table (m)
-% mapgrid.* are inputs; mapgrid2.* are outputs
+%
+% mapgrid.* are inputs to mars_mapi.f; mapgrid2.* are outputs of mars_mapi.f
 %
 % The 'standard' equilibrium ice table results are in mapgrid2.6b__40 (40% ice fraction)
-% Figure 8 in the paper is based on mapgrid2.6b__40 and mapgrid2.7c__40, where the latter merely represents a latitude band calculated at higher latitude resolution
+% Figure 8 in the paper is based on mapgrid2.6b__40 and mapgrid2.7c__40, where the latter covers a latitude band calculated at higher latitude resolution
 %
 
 
