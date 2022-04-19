@@ -6,7 +6,7 @@ Mars Subsurface Ice Model (MSIM)
 
 The MSIM program collection contains:
 
-* One-dimensional thermal model for the surface of Mars (Crank-Nicolson solver with Stefan-Boltzmann radiation us upper boundary condition)  
+* One-dimensional thermal model for the surface of Mars (Crank-Nicolson solver with Stefan-Boltzmann radiation upper boundary condition)  
 * Subsurface vapor diffusion and ice deposition model (1D diffusion, sublimation, adsorption)  
 * Equilibrium ice table on Mars
 * Asynchronously coupled method for subsurface-atmosphere vapor exchange on Mars
@@ -16,7 +16,7 @@ The MSIM program collection contains:
 
 This model calculates realistic surface temperatures on Mars. The heat equation is solved in the top few meters of the subsurface, using direct solar energy and sky irradiance as energy inputs.  The surface energy balance also includes the latent heat of CO<sub>2</sub> frost. 
 The finite-difference method is flux-conservative even on an irregularly spaced grid and the thermal properties of the soil can vary with depth and time.
-The solver for the one-dimensional heat equation is semi-implicit, which implies that the size of the time step is not limited by the spatial discretization, as it would be for simpler heat equation solvers.  For example, `mars_thermal1d.f` takes 100 steps per sol and calculates temperatures for 10 Mars years on the surface and at 80 depths in 1.3 seconds. As far as I am aware, this is still the fastest Mars thermal model available. 
+The solver for the one-dimensional heat equation is semi-implicit, which implies that the size of the time step is not limited by the spatial discretization, as it would be for simpler heat equation solvers.  For example, `mars_thermal1d.f` takes 100 steps per solar day and calculates temperatures for 10 Mars years on the surface and at 80 depths in 1.3 seconds. As far as I am aware, this is still the fastest Mars thermal model available. 
 The orbit of Mars can be for the present-day or the past. The standard configuration is for a horizontal unobstructed surface, but planar slopes can also be modeled.  
 
 *Documentation: User Guide Part 1*  
