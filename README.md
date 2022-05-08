@@ -14,7 +14,7 @@ The MSIM program collection contains:
 
 ### Mars Thermal Model
 
-This model calculates realistic surface temperatures on Mars. The heat equation is solved in the top few meters of the subsurface, using direct solar energy and sky irradiance as energy inputs.  The surface energy balance also includes the latent heat of CO<sub>2</sub> frost. 
+This model calculates realistic surface temperatures for Mars. The heat equation is solved in the top few meters of the subsurface, using direct solar energy and sky irradiance as energy inputs.  The surface energy balance also includes the latent heat of CO<sub>2</sub> frost. 
 The finite-difference method is flux-conservative even on an irregularly spaced grid and the thermal properties of the soil can vary with depth and time.
 The solver for the one-dimensional heat equation is semi-implicit, which implies that the size of the time step is not limited by the spatial discretization, as it would be for simpler heat equation solvers.  For example, `mars_thermal1d.f` takes 100 steps per solar day and calculates temperatures for 10 Mars years on the surface and at 80 depths in 1.3 seconds. As far as I am aware, this is still the fastest Mars thermal model available. 
 The orbit of Mars can be for the present-day or the past. The standard configuration is for a horizontal unobstructed surface, but planar slopes can also be modeled.  
@@ -42,8 +42,7 @@ The theory of subsurface-atmosphere vapor exchange leads to the concept of an eq
 
 ### Mars Long-Term Thermal Model
 
-This is also a Mars thermal model, but it is typically re-run every 1000 years over millions of years as the orbital and spin configuration of Mars changes. `insol_driver.f90` evaluates only the annual mean insolation (incoming solar radiation), whereas `tempr_driver.f90` calculates temperatures by solving the heat equation in the subsurface.
-(The latter is a trivial example of the concept of asynchronous coupling, because small and large time steps are involved.)  
+This is also a Mars thermal model, but it is typically re-run every 1000 years over millions of years as the orbital and spin configuration of Mars changes. `insol_driver.f90` evaluates only the annual mean insolation (incoming solar radiation), whereas `tempr_driver.f90` calculates temperatures by solving the heat equation in the subsurface.  
 
 `Mars/MilankOutput/` (surface temperatures from last 21Myr)
 
