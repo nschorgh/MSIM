@@ -1,4 +1,4 @@
-pure subroutine soilthprop(porosity,fill,rhocobs,tiobs,layertype, &
+subroutine soilthprop(porosity,fill,rhocobs,tiobs,layertype, &
      &     newrhoc,newti,icefrac)
 !***********************************************************************
 ! soilthprop: assign thermal properties of icy soil or dirty ice

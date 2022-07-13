@@ -15,10 +15,10 @@ C***********************************************************************
       real*8 solsy   ! number of sols in a Mars year
       parameter (NMAX=1000, sigSB=5.6704d-8)
       parameter (pi=3.1415926535897932, d2r=pi/180., zero=0.)
-      parameter (earthDay=86400., marsDay=88775.244, solsy=668.60)
+      parameter (earthDay=86400., marsDay=88775.244, solsy=668.592)
       parameter (Lco2frost=6.0e5)
 
-      integer nz, nsteps, n, i, nm
+      integer nz, nsteps, n, i, nm, ierr
       integer julday, iyr, imm, iday
       real*8 T(NMAX), tmax, time, dt, zmax, dz, zfac
       real*8 latitude, thermalInertia, albedo, albedo0, emiss, emiss0
@@ -35,7 +35,8 @@ C***********************************************************************
       external julday, flux_mars77, psv
 
 C-----read input       
-      open(unit=20,file='input.par',status='old')
+      open(unit=20,file='input.par',status='old',iostat=ierr)
+      if (ierr>0) stop('Input file not found')
       read(20,'(a)')dum1
       read(20,*)dt,tmax
       read(20,'(a)')dum1
