@@ -64,6 +64,11 @@ Most of the MSIM program collection was written 2001-2009, as part of a series o
 Third party source code from Numerical Recipes is covered by a separate copyright. These are files ending with .for. 
 
 
+### Technical Notes
+
+Most of the code was developed with a `gfortran` compiler on Intel processors. Many components were also run on various Linux clusters, sometimes using other compilers. The non-portable `real(8)` and `real*8` are meant to correspond to an 8-byte floating point number.
+
+
 ### Acknowledgments
 
 2006: Troy Hudson discovered a grid-point offset in conductionT and conductionQ, which has been corrected.
