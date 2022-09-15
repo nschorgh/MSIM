@@ -8,7 +8,7 @@ The MSIM program collection contains:
 
 * One-dimensional thermal model for the surface of Mars (Crank-Nicolson solver with Stefan-Boltzmann radiation upper boundary condition)  
 * Subsurface vapor diffusion and ice deposition model (1D diffusion, sublimation, adsorption)  
-* Equilibrium ice table on Mars
+* Equilibrium ice table on Mars (for horizontal surfaces and planar slopes)  
 * Asynchronously coupled method for subsurface-atmosphere vapor exchange on Mars
 
 
@@ -19,7 +19,7 @@ The finite-difference method is flux-conservative even on an irregularly spaced 
 The solver for the one-dimensional heat equation is semi-implicit, which implies that the size of the time step is not limited by the spatial discretization, as it would be for simpler heat equation solvers.  For example, `mars_thermal1d.f` takes 100 steps per solar day and calculates temperatures for 10 Mars years on the surface and at 80 depths in 1.3 seconds. As far as I am aware, this is still the fastest Mars thermal model available. 
 The orbit of Mars can be for the present-day or the past. The standard configuration is for a horizontal unobstructed surface, but planar slopes can also be modeled.  
 
-*Documentation: User Guide Part 1*  
+*Documentation: MSIM_Methods Part 1*  
 
 
 ### Vapor Diffusion Model
@@ -27,7 +27,7 @@ The orbit of Mars can be for the present-day or the past. The standard configura
 This model solves the one-dimensional vapor diffusion equation in a porous medium, including phase transitions (sublimation and adsorption).  Specifically, it simulates H<sub>2</sub>O vapor diffusion through the CO<sub>2</sub>-filled pore spaces in martian regolith. Diffusion can be outward or inward.
 The phase transitions make the partial differential equation non-linear, so an explicit time step is used. The same model can also be used (and has been used) for laboratory experiments in physically analogous environments.  
 
-*Documentation: User Guide Part 2  
+*Documentation: MSIM_Methods Part 2  
 Documentation: [Schorghofer & Aharonson (2005), Appendix B](https://doi.org/10.1029/2004JE002350)*  
 `Mars/Misc/` contains an animation of "vapor pumping" for illustration.
 
@@ -61,7 +61,9 @@ Most of the MSIM program collection was written 2001-2009, as part of a series o
 
 ### Notes
 
-Third party source code from Numerical Recipes is covered by a separate copyright. These are files ending with .for. 
+For thermal and ice evolution models of airless bodies see [Planetary-Code-Collection](https://github.com/nschorgh/Planetary-Code-Collection). The core of the 1D heat equation solver is the same as in MSIM. A three-dimensional surface energy balance model for Mars and airless bodies is also found in the Planetary-Code-Collection.  
+
+Third party source code from Numerical Recipes is covered by a separate copyright. These are files ending with `.for`. 
 
 
 ### Technical Notes
