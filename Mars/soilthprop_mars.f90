@@ -15,14 +15,14 @@ subroutine soilthprop(porosity,fill,rhocobs,tiobs,layertype, &
 !***********************************************************************
   implicit none
   integer, intent(IN) :: layertype
-  real*8, intent(IN) :: porosity, fill, rhocobs, tiobs
-  real*8, intent(OUT) :: newti, newrhoc
-  real*8, intent(IN) :: icefrac
-  real*8 kobs, cice, icedensity, kice
+  real(8), intent(IN) :: porosity, fill, rhocobs, tiobs
+  real(8), intent(OUT) :: newti, newrhoc
+  real(8), intent(IN) :: icefrac
+  real(8) kobs, cice, icedensity, kice
   !parameter (cice=2000.d0, icedensity=926.d0, kice=2.4d0) ! unaffected by scaling
   parameter (cice=1540.d0, icedensity=927.d0, kice=3.2d0) ! at 198 Kelvin
-  real*8 fA, ki0, ki, k
-  real*8, parameter :: kw=3. ! Mellon et al., JGR 102, 19357 (1997)
+  real(8) fA, ki0, ki, k
+  real(8), parameter :: kw=3. ! Mellon et al., JGR 102, 19357 (1997)
 
   kobs = tiobs**2/rhocobs
   ! k, rhoc, and ti are defined in between grid points
@@ -100,12 +100,12 @@ subroutine smartgrid(nz,z,zdepth,thIn,rhoc,porosity,ti,rhocv,layertype,icefrac)
 !***********************************************************************
   implicit none
   integer, intent(IN) :: nz, layertype
-  real*8, intent(IN) :: zdepth, thIn, rhoc, porosity, icefrac
-  real*8, intent(INOUT) :: z(nz)
-  real*8, intent(OUT) :: ti(nz), rhocv(nz)
+  real(8), intent(IN) :: zdepth, thIn, rhoc, porosity, icefrac
+  real(8), intent(INOUT) :: z(nz)
+  real(8), intent(OUT) :: ti(nz), rhocv(nz)
   integer j, b
-  real*8 stretch, newrhoc, newti
-  real*8, parameter :: NULL=0.
+  real(8) stretch, newrhoc, newti
+  real(8), parameter :: NULL=0.
   
   if (zdepth>0 .and. zdepth<z(nz)) then
 

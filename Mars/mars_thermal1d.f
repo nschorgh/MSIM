@@ -69,7 +69,9 @@ C     All time is referenced to dt0_j2000
       dt0_j2000 = jd + dcor/earthDay - 2451545.d0 
       
       call marsorbit(dt0_j2000,0.d0,marsLs,marsDec,marsR)
-
+!      call marsclock24(jd,buf,marsLs,marsDec,marsR,lonW,LTST)
+!      HA = 2.*pi*mod(LTST+12,24.d0)/24. ! hour angle
+      
       write(*,*) 'Model parameters'
       write(*,*) 'Time step=',dt,' Max number of steps=',nsteps
       write(*,*) 'zmax=',zmax,' zfac=',zfac
@@ -136,11 +138,16 @@ C     net flux: solar insolation + IR
 
 C-----loop over time steps 
       do n=0,nsteps-1
-         time = (n+1)*dt   !   time at n+1 
+         time = (n+1)*dt   !   time at n+1
 C        Solar insolation and IR at future time step
          tdays = time*(marsDay/earthDay)  ! parenthesis may improve roundoff
+
          call marsorbit(dt0_j2000,tdays,marsLs,marsDec,marsR) 
          HA = 2.*pi*mod(time,1.d0)    ! hour angle
+
+!         call marsclock24(jd+tdays,buf,marsLs,marsDec,marsR,lonW,LTST)
+!         HA = 2.*pi*mod(LTST+12,24.d0)/24. ! hour angle
+         
 !        psurf = psurf_season(520d0,marsLs) ! seasonally varying surf. pressure
 !        Tco2frost = tfrostco2(psurf)
          Qnp1 = flux_mars77(marsR,marsDec,latitude,HA,albedo,
@@ -182,10 +189,10 @@ c--------only output and diagnostics below this line
             nm = nm+1
          endif
          if (time>=tmax-solsy .and. mod(n,5)==0) then
-            write(21,'(f12.6,9f10.4)') time,marsLs/d2r,Tsurf,m
+            write(21,'(f12.6,9f10.4)') time,marsLs/d2r,Tsurf,max(m,0.d0)
          endif
          if (time>=tmax-solsy .and. mod(n,nint(solsy/dt/40.))==0) then
-            write(22,'(f12.4,1000(1x,f6.2))') time,(T(i),i=1,nz)
+            write(22,'(f12.4,*(1x,f6.2))') time,(T(i),i=1,nz)
          endif
 
       enddo                     ! end the time loop
