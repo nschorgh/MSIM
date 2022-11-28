@@ -17,12 +17,11 @@ program mars_mapi2p
   real*8, parameter :: marsDay=88775.244
   
   integer nz, iargc, job_nr, j, line_nr, k
-  real*8 dt, zmax, zfac, zdepth0, icefrac, zacc
+  real*8 dt, zmax, zfac, zdepth0, icefrac, zacc, zdepth0v(1)
   real*8 latitude, thIn, albedo0, fracIR, fracDust, delta
   real*8 Fgeotherm, rhoc, lon, Tfrost, pfrost, slpd, azFacd, patm
-  real*8 slp(NS), azFac(NS), zdepth(NS), avdrho(NS), Tb(NS), zz(NS)
-  real*8 psv, rtbis
-  external psv, rtbis
+  real*8 slp(NS), azFac(NS), zdepth(NS), avdrho(NS), Tb(NS), zz(NS), zerov(1)
+  real*8, external :: psv
   character(40) infile, outfile
   character(10) line_nr_string, job_nr_string
 
@@ -102,20 +101,23 @@ program mars_mapi2p
   Tb(1) = -1.e32
 
   print *,'ice depth on flat slope ...'
-  call jsubv(1, zmax, latitude*d2r, albedo0, thIn, pfrost, &
+  zerov = spread(zero,1,1)  ! new fortran restriction where rank(1)/=scalar
+  call jsubv(1, spread(zmax,1,1), latitude*d2r, albedo0, thIn, pfrost, &
        &     nz/2, rhoc, fracIR, fracDust, patm, Fgeotherm, 2.*dt, zfac, &
-       &     icefrac, zero, zero, 1, Tb(1), avdrho(1))
-  call jsubv(1, zmax, latitude*d2r, albedo0, thIn, pfrost, &
+       &     icefrac, zerov, zerov, 1, Tb(1), avdrho(1))
+  call jsubv(1, spread(zmax,1,1), latitude*d2r, albedo0, thIn, pfrost, &
        &     nz,   rhoc, fracIR, fracDust, patm, Fgeotherm,    dt, zfac, &
-       &     icefrac, zero, zero, 0, Tb(1), avdrho(1))
+       &     icefrac, zerov, zerov, 0, Tb(1), avdrho(1))
   print *, 'ice depth: ','  rho_ice-rho_surf'
   print *, zmax,'#',avdrho(1)
   if (avdrho(1)>=0.) then   ! no ice
      zdepth = -9999.
-  else  
-     zdepth0 = rtbis(delta/4.,zmax, zacc,avdrho(1), &
-          &     latitude*d2r,albedo0,thIn,pfrost,nz,rhoc,fracIR, &
-          &     fracDust,patm,Fgeotherm,dt,zfac,icefrac,zero,zero)
+  else
+     zdepth0v = zdepth0
+     call rtbisv(1, spread(delta/4.,1,1), spread(zmax,1,1), zacc, avdrho(1), &
+          &     latitude*d2r, albedo0, thIn, pfrost, nz, rhoc, fracIR, fracDust, &
+          &     patm, Fgeotherm, dt, zfac, icefrac, zerov, zerov, zdepth0v)
+     zdepth0 = zdepth0v(1)
   endif
   print *,'Equilibrium ice table depth on flat slope = ',zdepth0
 
@@ -153,71 +155,6 @@ program mars_mapi2p
   
 90 continue
 end program mars_mapi2p
-
-
-
-
-function rtbis(x1,x2,xacc,fmid, &
-     &     latitude,albedo0,thIn,pfrost,nz,rhoc,fracIR,fracDust,patm, &
-     &     Fgeotherm,dt,zfac,icefrac,SlopeAngle,azFac)
-  ! finds root with bisection method a la Numerical Recipes (C)
-  implicit none
-  REAL*8 rtbis,x1,x2,xacc
-  INTEGER, PARAMETER :: JMAX=40
-  INTEGER j,nz
-  REAL*8 dx,f,fmid,xmid,Tb,rhoc
-  real*8 latitude,albedo0,thIn,pfrost,fracIR,fracDust,Fgeotherm,dt
-  real*8 zfac,icefrac,SlopeAngle,azFac,patm
-  real*8 xlower,xupper,fupper,flower
-  
-  Tb = -1.e32
-  call jsubv(1,x1, &
-       &     latitude,albedo0,thIn,pfrost,nz/2,rhoc,fracIR,fracDust,patm, &
-       &     Fgeotherm,2.*dt,zfac,icefrac,SlopeAngle,azFac,1,Tb,f)
-  call jsubv(1,x1, &
-       &     latitude,albedo0,thIn,pfrost,nz,rhoc,fracIR,fracDust,patm, &
-       &     Fgeotherm,dt,zfac,icefrac,SlopeAngle,azFac,0,Tb,f)
-  print *,x1,f
-  if (f<0.) then  ! ice stable at the uppermost location
-     rtbis = x1   ! equilibrium ice table is less than x1
-     fmid = f
-     return
-  endif
-  if (f*fmid>=0.) stop 'root must be bracketed in rtbis'
-  rtbis = x2
-  dx = x1-x2
-  xupper=x1; fupper=f
-  xlower=x2; flower=fmid
-  do j=1,JMAX
-     dx = dx*.5
-     xmid = rtbis+dx
-     Tb = -1.e32
-     call jsubv(1,xmid, &
-          &     latitude,albedo0,thIn,pfrost,nz/2,rhoc,fracIR,fracDust,patm, &
-          &     Fgeotherm,2.*dt,zfac,icefrac,SlopeAngle,azFac,1,Tb,fmid)
-     call jsubv(1,xmid, &
-          &     latitude,albedo0,thIn,pfrost,nz  ,rhoc,fracIR,fracDust,patm, &
-          &     Fgeotherm,   dt,zfac,icefrac,SlopeAngle,azFac,0,Tb,fmid)
-     print *,xmid,fmid
-     if(fmid <= 0.) then
-        rtbis = xmid
-        xlower=xmid; flower=fmid
-     else
-        xupper=xmid; fupper=fmid
-     endif
-     if(abs(dx/xmid)<xacc .or. fmid==0.) then
-        
-        ! do linear interpolation at last
-        rtbis = (fupper*xlower - flower*xupper)/(fupper-flower)
-
-        ! report last stable ice table instead
-        ! rtbis = xlower
-        ! fmid = flower
-        return
-     endif
-  enddo
-  print *,'too many bisections in rtbis'
-end function rtbis
 
 
 
