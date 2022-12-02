@@ -11,12 +11,12 @@ SR = ../
 
 
 testcrankQ: testcrankQ.o makefile
-	make CC='$(CC)' CFLAGS='$(CFLAGS)' -C $(SR) common
+	make CC='$(CC)' CFLAGS='$(CFLAGS)' -C $(SR) common-mars
 	$(CC) $(LFLAGS) testcrankQ.o $(SR)flux_noatm.o $(SR)conductionQ.o \
 	$(SR)tridag.o $(SR)grids.o
 
 testcrankT: testcrankT.o makefile
-	make CC='$(CC)' CFLAGS='$(CFLAGS)' -C $(SR) common
+	make CC='$(CC)' CFLAGS='$(CFLAGS)' -C $(SR) common-mars
 	$(CC) $(LFLAGS) testcrankT.o $(SR)conductionT.o $(SR)tridag.o $(SR)grids.o
 
 

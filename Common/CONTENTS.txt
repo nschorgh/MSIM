@@ -9,8 +9,17 @@ flux_noatm.f90:
 	flux_noatm: Insolation on horizontal or sloped surface without atmosphere
 	flux_wshad: incoming flux for airless body with distant horizon
 
+flux_mars.f90: 
+	insolation with a zero-dimensional Mars	atmosphere
+	flux_mars77: horizontal unobstructed surface
+	flux_mars2: planar slope
+
 generalorbit.f: 
 	distance, longitude, and declination of the sun from orbital elements
+
+marsorbit.f90:
+	position of the sun as seen from Mars; data from Allison & McEwen (2000)
+	marsclock24: marsorbit + local Mars time
 
 conductionQ.f90:
 	1D thermal conduction with heterogeneous thermal properties and 
@@ -25,6 +34,9 @@ derivs.f90:
 	
 grids.f90:
 	creates appropriate 1D grids, and contains other grid-related functions
+
+soilthprop_mars.f90:
+	thermal properties of icy soil on Mars
 
 psv.f: 
 	psv: vapor pressure of H2O
