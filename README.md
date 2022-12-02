@@ -20,7 +20,7 @@ The solver for the one-dimensional heat equation is semi-implicit, which implies
 As far as I am aware, it is still the fastest Mars thermal model available. 
 The orbit of Mars can be for the present-day or the past. The standard configuration is for a horizontal unobstructed surface, but planar slopes can also be modeled.  
 
-*Documentation: MSIM_Methods Part 1*  
+*Documentation: [MSIM_Methods](https://raw.githubusercontent.com/nschorgh/MSIM/main/MSIM_Methods.pdf) Part 1*  
 
 
 ### Vapor Diffusion Model
@@ -28,7 +28,7 @@ The orbit of Mars can be for the present-day or the past. The standard configura
 This model solves the one-dimensional vapor diffusion equation in a porous medium, including phase transitions (sublimation and adsorption).  Specifically, it simulates H<sub>2</sub>O vapor diffusion through the CO<sub>2</sub>-filled pore spaces in martian regolith. Diffusion can be outward or inward.
 The phase transitions make the partial differential equation non-linear, so an explicit time step is used. The same model can also be used (and has been used) for laboratory experiments in physically analogous environments.  
 
-*Documentation: MSIM_Methods Part 2  
+*Documentation: [MSIM_Methods](https://raw.githubusercontent.com/nschorgh/MSIM/main/MSIM_Methods.pdf) Part 2  
 Documentation: [Schorghofer & Aharonson (2005), Appendix B](https://doi.org/10.1029/2004JE002350)*  
 `Mars/Misc/` contains an animation of "vapor pumping" for illustration.
 
