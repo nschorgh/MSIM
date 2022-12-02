@@ -185,7 +185,7 @@ program mars_thermal2p
      Qnp1(2) = (1-albedo(2))*(Qdir(2)+Qscat*skyviewfactor) + emiss(1)*Qlw*skyviewfactor
      ! terrain irradiance on slope
      Qnp1(2) = Qnp1(2) + (1.-skyviewfactor)*sigSB*emiss(1)*Tsurf(1)**4
-     Qnp1(2) = Qnp1(2) + (1.-skyviewfactor)*albedo(1)*Qdir(2)
+     Qnp1(2) = Qnp1(2) + (1.-skyviewfactor)*albedo(1)*Qdir(1)
      
      do k=1,2
         Tsurfold = Tsurf(k)
