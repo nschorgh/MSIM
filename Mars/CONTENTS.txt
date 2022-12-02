@@ -13,6 +13,9 @@ mars_thermal1d.f: (main program)
 	1D diffusion of temperature for Mars; prototype example of how to call
 	conductionQ and conductionT with seasonal CO2 frost cover
 
+mars_thermal2p.f: (main program)
+	1D diffusion of temperature for Mars for planar slope
+
 marsorbit.f90:
 	position of the sun as seen from Mars; data from Allison & McEwen (2000)
 	marsclock24: marsorbit + local Mars time
@@ -22,6 +25,9 @@ soilthprop_mars.f90:
 
 input.par:
 	example input file for mars_thermal1d.f
+
+input_slope.par:
+	example input file for mars_thermal2p.f90
 
 
 

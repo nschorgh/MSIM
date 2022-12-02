@@ -1,0 +1,16 @@
+C dt,tmax in units of Martian solar days
+ 0.01, 6686.0
+C nz,zmax,zfac
+ 80, 4., 1.05
+C latitude(deg),albedo,emissivity,longitude(degEast)
+ -30., 0.19,  1., 0.
+C thermalInertia,rho*c(kg/m^3),zdepth(<0 is none)
+ 250., 1070000., -9999.
+C fracIR,fracDust,Fgeotherm(W/m^2)
+ 0.04,  0.02, 0.028
+C elevation(m),co2albedo,co2emiss
+ 2000., 0.65, 1.
+C Slope(deg),azimuth(deg east of north)
+ 20., 0.
+C Snapshot year,month,day
+ 2021,04,22

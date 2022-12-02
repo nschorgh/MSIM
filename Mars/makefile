@@ -29,6 +29,13 @@ mars_thermal mars_thermal1d: mars_thermal1d.o marsorbit.o flux_mars.o \
 	$(SR)conductionQ.o $(SR)tridag.o $(SR)conductionT.o $(SR)grids.o \
 	soilthprop_mars.o $(SR)psv.o 
 
+mars_thermal2p mars2p: mars_thermal2p.o marsorbit.o flux_mars.o \
+	soilthprop_mars.o makefile
+	make -C $(SR) common
+	$(CC) $(LFLAGS) mars_thermal2p.o $(SR)julday.o marsorbit.o flux_mars.o \
+	$(SR)conductionQ.o $(SR)tridag.o $(SR)conductionT.o $(SR)grids.o \
+	soilthprop_mars.o $(SR)psvco2.o 
+
 mars_mapt: mars_mapt.o jsub.o marsorbit.o flux_mars.o soilthprop_mars.o \
 	makefile
 	make -C $(SR) common
@@ -103,7 +110,7 @@ common-mars: marsorbit.o vapordiffusioni.o flux_mars.o soilthprop_mars.o
 
 clean:
 	rm -f  *.o  a.out  *.mod \
-	z means exper_fast mars_fast stabgrow_fast
+	z means exper_fast mars_fast stabgrow_fast Tsurface Tprofile
 
 
 
