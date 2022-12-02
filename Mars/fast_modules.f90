@@ -95,7 +95,7 @@ module allinterfaces
        integer, intent(IN) :: nz, typeT
        real(8), intent(IN), dimension(nz) :: z, rhosatav, porefill
        real(8), intent(IN) :: rhosatav0, rlow, avrho1
-       integer, intent(INOUT) :: typeF
+       integer, intent(OUT) :: typeF
        real(8), intent(INOUT) :: zdepthF
        real(8), intent(IN) :: B 
        real(8), intent(OUT) :: ypp(nz), zdepthG

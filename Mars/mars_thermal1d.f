@@ -1,7 +1,9 @@
       program mars_thermal1d
 C***********************************************************************
 C   mars_thermal1d:  program to calculate the diffusion of temperature 
-C                    into the ground
+C                    into the Martian ground; based on direct solar
+C                    irradiance, heat conduction, and sky irradiance
+C
 C   Eqn: rho*c*T_t = (k*T_z)_z   where k is the thermal conductivity
 C   BC (z=0): Q(t) + k*T_z = emiss*sig*T^4 + L*dm/dt
 C   BC (zmax): geothermal flux
@@ -22,7 +24,7 @@ C***********************************************************************
       integer julday, iyr, imm, iday
       real*8 T(NMAX), tmax, time, dt, zmax, dz, zfac
       real*8 latitude, thermalInertia, albedo, albedo0, emiss, emiss0
-      real*8 fracIR, fracDust, rhoc, delta
+      real*8 fracIR, fracDust, rhoc, delta, zdepth
       real*8 Qn, Qnp1, tdays, dtsec
       real*8 marsR, marsLs, marsDec, HA
       real*8 jd, temp1, dcor, dt0_j2000, flux_mars77
@@ -44,7 +46,7 @@ C-----read input
       read(20,'(a)')dum1
       read(20,*)latitude,albedo0,emiss0
       read(20,'(a)')dum1
-      read(20,*)thermalInertia,rhoc
+      read(20,*)thermalInertia,rhoc,zdepth
       read(20,'(a)')dum1
       read(20,*)fracIR,fracDust,Fgeotherm
       read(20,'(a)')dum1
@@ -111,9 +113,9 @@ C-----initialize
          exit
       enddo
       if (z(1)<1.e-5) print *,'WARNING: first grid point is too shallow'
-      call smartgrid(nz,z,0.1d0,thermalInertia,rhoc,0.4d0,ti,rhocv,
+      call smartgrid(nz,z,zdepth,thermalInertia,rhoc,0.4d0,ti,rhocv,
      &     1,zero)
-!      call smartgrid(nz,z,0.1d0,thermalInertia,rhoc,zero,ti,rhocv,
+!      call smartgrid(nz,z,zdepth,thermalInertia,rhoc,zero,ti,rhocv,
 !     &     3,zero)
       open(unit=30,file='z',status='unknown')
       write(30,*) (z(i),i=1,nz)
@@ -121,7 +123,7 @@ C-----initialize
       do i=1,nz ! assign thermal properties, if not already set by smartgrid
 !         ti(i) = thermalInertia
 !         rhocv(i) = rhoc
-!         if (z(i)>0.1) then
+!         if (z(i)>zdepth) then
 !            call soilthprop(0.4d0,1.d0,rhoc,thermalInertia,1,
 !     &           rhocv(i),ti(i))
 !            call soilthprop(zero,zero,zero,zero,3,rhocv(i),ti(i),zero)

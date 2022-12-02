@@ -4,8 +4,8 @@ C nz,zmax,zfac
  80, 5.0, 1.05
 C latitude(deg),albedo,emissivity
  -60., 0.19,  1.
-C thermalInertia,rho*c
- 250., 1070000.
+C thermalInertia,rho*c(kg/m^3),zdepth(<0 for none)
+ 250., 1070000., 0.1
 C fracIR,fracDust,Fgeotherm(W/m^2)
  0.04,  0.02, 0.0
 C Tco2frost(K),co2albedo,co2emiss
