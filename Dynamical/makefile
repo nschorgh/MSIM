@@ -53,7 +53,7 @@ mars_fast: fast_modules.o mars_fast.o fast_subs_univ.o fast_subs_mars.o \
 
 clean:
 	rm -f  *.o  a.out  *.mod \
-	z exper_fast mars_fast stabgrow_fast Tsurface Tprofile
+	z exper_fast mars_fast stabgrow_fast 
 
 
 
