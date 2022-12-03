@@ -1,0 +1,53 @@
+MarsThermal/
+
+Mars Subsurface Ice Model (M-SIM) Collection: Thermal and Microphysical Models
+==============================================================================
+
+
+mars_thermal1d.f: (main program)
+	1D diffusion of temperature for Mars; prototype example of how to call
+	conductionQ and conductionT with seasonal CO2 frost cover
+
+mars_thermal2p.f: (main program)
+	1D diffusion of temperature for Mars for planar slope
+
+input.par:
+	example input file for mars_thermal1d.f
+
+input_slope.par:
+	example input file for mars_thermal2p.f90
+
+
+
+exper_thermal1d.f: (main program)
+	1D diffusion of temperature and optionally also water vapor with 
+	prescribed surface temperature for laboratory setting
+
+exper.par:
+	example input file for exper_thermal1d.f
+
+
+
+vapordiffusioni.f:
+	diffusion of water vapor with phase transitions on irregularly spaced
+	grid, explicit solver
+
+adsorption.f:
+	amount of adsorbed H2O and more
+
+
+
+insol_driver.f90: (simple main program)
+  	insolation (incoming solar radiation) over the past 20 Myr
+
+tempr_driver.f90: (main program)
+  	temperatures over the past 20 Myr
+
+lats.milank:
+	example input file for tempr_driver.f90
+
+
+
+makefile:
+	shows file dependencies
+

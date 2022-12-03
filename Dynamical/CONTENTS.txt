@@ -1,0 +1,44 @@
+Dynamical/
+
+M-SIM Collection: Fast Asynchronously Coupled Model of Subsurface-Atmosphere Exchange
+=====================================================================================
+
+
+fast_modules.f90:
+	asynchronously coupled routines for growth and depletion of subsurface ice,
+	Fortran modules
+
+fast_subs_univ.f90:
+	asynchronously coupled routines for growth and depletion of subsurface ice, 
+	general subroutines
+
+fast_subs_exper.f90:
+	asynchronously coupled routines for growth and depletion of subsurface ice,
+	subroutines for laboratory experiment
+
+fast_subs_mars.f90:
+	asynchronously coupled routines for growth and depletion of subsurface ice,
+	subroutines for Mars
+
+stabgrow_fast.f90: (main program)
+	asynchronously coupled model for growth of pore ice
+
+exper_fast.f90: (main program)
+	asynchronously coupled model for growth and depletion of subsurface ice
+	for laboratory experiment
+
+input_fast.par:
+	example input file for stabgrow_fast.f90 and exper_fast.f90
+
+mars_fast.f90: (main program)
+	asynchronously coupled model for growth and depletion of subsurface ice
+	for Mars
+
+lats.ph:
+	example input file for mars_fast.f90
+
+
+
+makefile:
+	shows file dependencies
+

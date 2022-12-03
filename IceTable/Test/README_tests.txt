@@ -1,15 +1,6 @@
 Examples for validation:
 ========================
 
-1. Basic thermal model for Mars
-
-make mars_thermal
-
-./a.out
-
-reads input.par and produces outputs 'Tprofile', 'Tsurface', and 'z'
-
-
 
 2a. Equilibrium ice table for a list of sites:
 
@@ -40,18 +31,7 @@ compare with 'mapgrid2.ii'
 
 
 
-3. Ice retreat at Phoenix Landing site over the last 2000 years:
-
-make mars_fast
-
-./mars_fast ph
-
-This will read input file 'lats.ph' and produce output files 'depths.ph' and
-'depthF.ph'.
-
-
-
-4. Equilibrium ice table depths for various slopes:
+3. Equilibrium ice table depths for various slopes:
 
 make mars_mapi2p
 

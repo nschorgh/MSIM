@@ -1,0 +1,45 @@
+IceTable/
+
+Mars Subsurface Ice Model (M-SIM) Collection: Equilibrium Ice Table
+===================================================================
+
+
+jsub.f90:
+	net vapor flux between ice table and surface; includes thermal model
+
+jsubv.f90:
+	vectorized version of jsub; includes emission from one surface to another
+	for planar slopes
+
+mars_mapi.f: (main program)
+	determines equilibrium ice table depth for a list of locations (such as
+	the entire globe) using the bisection method
+
+mars_mapii.f90: (main program)
+	determines equilibrium ice table depth for a list of locations;
+	same functionality as mars_mapi.f, but uses an iteration method
+
+mapgrid.dat:
+	Example input file for mars_mapi.f and mars_mapt.f
+
+mars_mapt.f: (main program)
+	calculates temperatures and other variables for a list of locations;
+	calls jsub for a list of locations (such as the entire globe)
+
+mars_mapi2p.f90: (main program)
+        calculates temperatures on thermally coupled planar slopes;
+	also calculates equilibrium ice table depths;
+	configured for parallel job execution
+
+mapgrid.slp:
+	example input file for mars_mapi2p.f90
+
+mars_mapi2p_go.cmd
+	shell script for parallel execution of mars_mapi2p
+	
+
+
+
+makefile:
+	shows file dependencies
+
