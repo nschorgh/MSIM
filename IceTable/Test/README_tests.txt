@@ -1,8 +1,7 @@
-Examples for validation:
-========================
+Examples for validation
+=======================
 
-
-2a. Equilibrium ice table for a list of sites:
+1. Equilibrium ice table for a list of sites:
 
 make mars_mapi
 
@@ -20,7 +19,7 @@ reads 'mapgrid2.dat' and outputs 'mapgrid3.dat', which should be idential to
 
 
 
-2b. Equilibrium ice table for a list of sites using mars_mapii:
+2. Equilibrium ice table for a list of sites using mars_mapii:
 
 make mars_mapi
 

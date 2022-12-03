@@ -1,8 +1,7 @@
-Examples for validation:
-========================
+Example for validation
+======================
 
-
-4. Ice retreat at Phoenix Landing site over the last 2000 years:
+Ice retreat at Phoenix Landing site over the last 2000 years:
 
 make mars_fast
 

@@ -1,5 +1,5 @@
-Examples for validation:
-========================
+Examples for validation
+=======================
 
 1. Basic thermal model for Mars
 
