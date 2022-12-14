@@ -10,3 +10,12 @@ make mars_thermal
 reads input.par and produces outputs 'Tprofile', 'Tsurface', and 'z'
 
 
+
+2. Thermal model on slope on Mars
+
+make mars_thermal2p
+
+./a.out
+
+reads input_slope.par, and the output files should match Tprofile.slope,
+Tsurface.slope, and z.slope

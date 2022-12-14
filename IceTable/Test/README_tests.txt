@@ -14,7 +14,7 @@ make mars_mapt
 
 ./a.out
 
-reads 'mapgrid2.dat' and outputs 'mapgrid3.dat', which should be idential to
+reads 'mapgrid2.dat' and outputs 'mapgrid3.dat', which should be identical to
 'mapgrid2.dat', as well as 'means'.
 
 

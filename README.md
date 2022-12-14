@@ -47,7 +47,7 @@ In folder `IceTable/`
 
 ### Mars Long-Term Thermal Model
 
-This is also a Mars thermal model, but it is typically re-run every 1000 years over millions of years as the orbital and spin configuration of Mars changes. `insol_driver.f90` evaluates only the annual mean insolation (incoming solar radiation), whereas `tempr_driver.f90` calculates temperatures by solving the heat equation in the subsurface.  
+This is also a Mars thermal model, but it is typically re-run every 1000 years over millions of years as the orbital and spin configuration of Mars changes. `insol_driver.f90` evaluates only the annual mean insolation (incoming solar radiation), whereas `tempr_driver.f90` also calculates temperatures by solving the heat equation in the subsurface.  
 
 In folder `MarsThermal/`  
 `MarsThermal/MilankOutput/` (surface temperatures from last 21Myr)  
@@ -64,19 +64,16 @@ In folder `Dynamical/`
 
 ### History
 
-Most of the MSIM program collection was written 2001-2009, as part of a series of papers about subsurface-atmosphere vapor exchange on Mars. It was then hosted on a website and later moved to GitHub as part of the [Planetary-Code-Collection](https://github.com/nschorgh/Planetary-Code-Collection). MSIM has its own [GitHub repository](https://github.com/nschorgh/MSIM) since 2022.
+Most of the MSIM program collection was written 2001-2009, as part of a series of papers about subsurface-atmosphere vapor exchange on Mars. It was then hosted on a website and later moved to GitHub as part of the [Planetary-Code-Collection](https://github.com/nschorgh/Planetary-Code-Collection). Since 2022, MSIM has its own [GitHub repository](https://github.com/nschorgh/MSIM).
 
 
 ### Notes
 
 For thermal and ice evolution models of airless bodies see [Planetary-Code-Collection](https://github.com/nschorgh/Planetary-Code-Collection). A three-dimensional surface energy balance model for Mars and airless bodies is also found in the Planetary-Code-Collection.  
 
-Third party source code from Numerical Recipes is covered by a separate copyright. These are files ending with `.for`. 
+Third party source code from Numerical Recipes is covered by a separate copyright. These are files ending with `.for`.  
 
-
-### Technical Notes
-
-Most of the code was developed with a `gfortran` compiler on Intel processors. Many components were also run on various Linux clusters, sometimes using other compilers. The non-portable `real(8)` and `real*8` are meant to correspond to an 8-byte floating point number.
+Most of the code was developed with a `gfortran` compiler on Intel processors. Many components were also run on various Linux clusters, sometimes using other compilers. The non-portable `real(8)` and `real*8` are meant to correspond to an 8-byte floating point number.  
 
 
 ### Acknowledgments
