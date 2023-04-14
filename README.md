@@ -9,7 +9,7 @@ The MSIM program collection contains:
 * One-dimensional thermal model for the surface of Mars (Crank-Nicolson solver with Stefan-Boltzmann radiation upper boundary condition)  
 * Subsurface vapor diffusion and ice deposition model (1D diffusion, sublimation, adsorption)  
 * Equilibrium ice table on Mars (for horizontal surfaces and planar slopes)  
-* Asynchronously coupled method for subsurface-atmosphere vapor exchange on Mars
+* Asynchronously coupled method for subsurface-atmosphere vapor exchange on Mars (non-equilibrium ice table and ice content)  
 
 
 ### Mars Thermal Model

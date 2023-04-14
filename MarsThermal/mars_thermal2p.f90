@@ -139,7 +139,7 @@ program mars_thermal2p
         endif
      enddo
   enddo
-  open(unit=30,file='z',status='unknown');
+  open(unit=30,file='z',status='unknown')
   write(30,*) (z(i),i=1,nz)
   close(30)
 
@@ -164,7 +164,7 @@ program mars_thermal2p
      !  Solar insolation and IR at future time step
      tdays = time*(marsDay/earthDay)  ! parenthesis may improve roundoff
      
-     !call marsorbit(dt0_j2000,tdays,marsLs,marsDec,marsR); 
+     !call marsorbit(dt0_j2000,tdays,marsLs,marsDec,marsR)
      !HA = 2.*pi*mod(time,1.d0)    ! hour angle
      !print *,'Ls1=',marsLs,'HA1=',HA
      
@@ -204,7 +204,7 @@ program mars_thermal2p
            Tsurf(k) = Tco2frost
            dE = (- Qn(k) - Qnp1(k) + Fsurfold + Fsurf(k) + &
                 &  emiss(k)*sigSB*(Tsurfold**4+Tsurf(k)**4))/2.
-           m(k) = m(k) + dtsec*dE/Lco2frost;
+           m(k) = m(k) + dtsec*dE/Lco2frost
         endif
         
         if (Tsurf(k)>Tco2frost .or. m(k)<=0.) then
