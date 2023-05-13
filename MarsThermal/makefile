@@ -34,8 +34,9 @@ mars_thermal2p mars2p: mars_thermal2p.o makefile
 	$(SR)flux_mars.o $(SR)conductionQ.o $(SR)tridag.o $(SR)conductionT.o \
 	$(SR)grids.o $(SR)soilthprop_mars.o $(SR)psvco2.o
 
-insol_driver: insol_driver.o $(SR)generalorbit.o $(SR)flux_noatm.o makefile
-	$(CC) $(LFLAGS) insol_driver.o generalorbit.o flux_noatm.o
+insol_driver: insol_driver.o makefile
+	make -C $(SR) common-mars
+	$(CC) $(LFLAGS) insol_driver.o $(SR)generalorbit.o $(SR)flux_noatm.o
 
 tempr_driver: tempr_driver.o makefile
 	make -C $(SR) common-mars

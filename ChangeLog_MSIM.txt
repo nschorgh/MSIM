@@ -2,7 +2,7 @@ Log of major changes (going back to times before git version control)
 ---------------------------------------------------------------------
 
 15 Apr 2023: Release v1.2.1  doi:10.5281/zenodo.7832269
-Major reorganization of repository since last release, but almost no changes in functionality.
+Major reorganization of repository since last release, but few changes in functionality.
 
 2 Dec 2022: Added old data outputs (maps of equilibrium ice table) to repository.
 

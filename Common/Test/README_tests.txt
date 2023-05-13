@@ -26,3 +26,8 @@ a.out
 - z.testcrankQ contains the coordinates of the vertical grid
 - stdout_of_testcrankQ.txt contains the time-averaged temperature profile and heat flux
 After the temperature has equilibrated, the time-averaged heat flux must be constant with depth and must equal the heat flux specified at the bottom boundary.
+
+
+
+NOTE: Additional validation tests are available at
+https://github.com/nschorgh/Planetary-Code-Collection/tree/master/Common/Test/
