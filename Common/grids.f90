@@ -79,23 +79,6 @@ end function colint
 
 
  
-subroutine dzvector(nz,z,dz) 
-  ! matches function colint
-  implicit none
-  integer, intent(IN) :: nz
-  real(8), intent(IN) :: z(nz)
-  real(8), intent(OUT) :: dz(nz)
-  integer i
-  
-  dz(1) = (z(2)-0.)/2
-  do i=2,nz-1
-     dz(i) = (z(i+1)-z(i-1))/2.
-  enddo
-  dz(nz) = z(nz)-z(nz-1)
-end subroutine dzvector
-
-
-
 subroutine heatflux_from_temperature(nz,z,T,k,H)
   ! calculates heat flux from temperature profile
   ! like k, the heat flux H is defined mid-point
