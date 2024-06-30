@@ -22,7 +22,7 @@ The orbit of Mars can be for the present-day or the past. The standard configura
 
 In folder `MarsThermal/`  
 *Documentation: [MSIM_Methods](https://raw.githubusercontent.com/nschorgh/MSIM/main/MSIM_Methods.pdf) Part 1*  
-
+*Documentation: [Schörghofer & Khatiwala (2024)](https://doi.org/10.3847/PSJ/ad4351)*
 
 
 ### Vapor Diffusion Model
