@@ -1,9 +1,9 @@
-CC = gfortran
-CFLAGS = -O2 -Wall
+FC = gfortran
+FFLAGS = -O2 -Wall
 LFLAGS = -O2 -Wall
 
-#CC = ifort
-#CFLAGS = -O2 -warn all  -warn notruncated_source  -nogen-interface
+#FC = ifort
+#FFLAGS = -O2 -warn all  -warn notruncated_source  -nogen-interface
 #LFLAGS = -O2 -warn all
 
 SR = ../
@@ -11,21 +11,21 @@ SR = ../
 
 
 testcrankQ: testcrankQ.o makefile
-	make CC='$(CC)' CFLAGS='$(CFLAGS)' -C $(SR) common-mars
-	$(CC) $(LFLAGS) testcrankQ.o $(SR)flux_noatm.o $(SR)conductionQ.o \
+	make FC='$(FC)' FFLAGS='$(FFLAGS)' -C $(SR) common-mars
+	$(FC) $(LFLAGS) testcrankQ.o $(SR)flux_noatm.o $(SR)conductionQ.o \
 	$(SR)tridag.o $(SR)grids.o
 
 testcrankT: testcrankT.o makefile
-	make CC='$(CC)' CFLAGS='$(CFLAGS)' -C $(SR) common-mars
-	$(CC) $(LFLAGS) testcrankT.o $(SR)conductionT.o $(SR)tridag.o $(SR)grids.o
+	make FC='$(FC)' FFLAGS='$(FFLAGS)' -C $(SR) common-mars
+	$(FC) $(LFLAGS) testcrankT.o $(SR)conductionT.o $(SR)tridag.o $(SR)grids.o
 
 
 
 %.o:	%.f makefile
-	$(CC) $(CFLAGS) -c $<
+	$(FC) $(FFLAGS) -c $<
 
 %.o:	%.f90 makefile
-	$(CC) $(CFLAGS) -c $<  
+	$(FC) $(FFLAGS) -c $<
 
 
 .PHONY: clean cleanrun
