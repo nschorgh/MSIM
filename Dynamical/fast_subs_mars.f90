@@ -65,9 +65,9 @@ subroutine icelayer_mars(bigstep,nz,NP,thIn,rhoc,z,porosity,pfrost, &
 
      call assignthermalproperties(nz,thIn(k),rhoc(k),ti,rhocv, &
           & typeT,icefrac,porosity,porefill(:,k))
-     
+
      !----run thermal model
-     call ajsub_mars(typeT, latitude(k)*d2r, albedo(k), pfrost(k), nz, z, & 
+     call ajsub_mars(typeT, latitude(k)*d2r, albedo(k), pfrost(k), nz, z, &
           &     ti, rhocv, fracIR, fracDust, p0(k), ecc, omega, eps, &
           &     avdrho(k), avdrhoP(k), avrho1(k), Tb(k), zdepthE(k), typeF, &
           &     zdepthF(k), ypp, porefill(:,k), Tmean1(k), Tmean3(k), B, &
@@ -83,7 +83,7 @@ subroutine icelayer_mars(bigstep,nz,NP,thIn,rhoc,z,porosity,pfrost, &
      else
         jump = -9
      endif
-     if (zdepthT(k)>=0. .and. avdrho(k)*avdrho_old(k)<0.) then 
+     if (zdepthT(k)>=0. .and. avdrho(k)*avdrho_old(k)<0.) then
         write(34,*) '# zdepth arrested'
         if (jump>1) write(34,*) '# previous step was too large',jump
      endif
@@ -92,7 +92,7 @@ subroutine icelayer_mars(bigstep,nz,NP,thIn,rhoc,z,porosity,pfrost, &
      zdepth_old(k) = zdepthT(k)
      avdrho_old(k) = avdrho(k)
 
-!----mode 2 growth  
+!----mode 2 growth
      typeP = -9;  mode2 = .FALSE.
      do j=1,nz
         if (porefill(j,k)>0.) then
@@ -104,7 +104,7 @@ subroutine icelayer_mars(bigstep,nz,NP,thIn,rhoc,z,porosity,pfrost, &
         if (porefill(typeP,k)>=1. .and. porefill(typeP-1,k)==0. .and. &
              & zdepthE(k)<z(typeP) .and. &
              & z(typeP)-zdepthE(k)>2*(z(typeP)-z(typeP-1))) then  ! trick that avoids oscillations
-           deltaz = -avdrhoP(k)/z(typeP)*18./8314.*B  ! conservation of mass 
+           deltaz = -avdrhoP(k)/z(typeP)*18./8314.5*B  ! conservation of mass
            if (deltaz>z(typeP)-z(typeP-1)) then  ! also implies avdrhoP<0.
               mode2 = .TRUE.
            endif
@@ -135,7 +135,7 @@ subroutine ajsub_mars(typeT, latitude, albedo0, pfrost, nz, z, ti, rhocv, &
 !  A 1D thermal model that returns various averaged quantities
 !
 !  Tb<0 initializes temperatures
-!  Tb>0 initializes temperatures with Tb 
+!  Tb>0 initializes temperatures with Tb
 !***********************************************************************
   use miscparameters
   use thermalmodelparam_mars
@@ -150,7 +150,7 @@ subroutine ajsub_mars(typeT, latitude, albedo0, pfrost, nz, z, ti, rhocv, &
   real(8), intent(OUT) :: avrho1  ! mean vapor density on surface
   real(8), intent(INOUT) :: Tb, Tmean1
   integer, intent(OUT) :: typeF  ! index of depth below which filling occurs
-  real(8), intent(OUT) :: zdepthE, zdepthF 
+  real(8), intent(OUT) :: zdepthE, zdepthF
   real(8), intent(OUT) :: ypp(nz) ! (d rho/dt)/Diff
   real(8), intent(OUT) :: Tmean3, zdepthG
   real(8), intent(IN) :: B  ! just passing through
@@ -162,25 +162,25 @@ subroutine ajsub_mars(typeT, latitude, albedo0, pfrost, nz, z, ti, rhocv, &
   real(8) marsR, marsLs, marsDec, HA
   real(8) Tsurf, Tco2frost, albedo, Fsurf, m, dE, emiss, T(NMAX)
   real(8) Told(nz), Fsurfold, Tsurfold, Tmean0, avrho2
-  real(8) rhosatav0, rhosatav(nz), rlow 
+  real(8) rhosatav0, rhosatav(nz), rlow
   real(8), external :: psv, tfrostco2
-  
+
   tmax = EQUILTIME*solsperyear
   nsteps = int(tmax/dt)     ! calculate total number of timesteps
 
-  Tco2frost = tfrostco2(patm) 
+  Tco2frost = tfrostco2(patm)
 
   if (Tb<=0.) then  ! initialize
      !Tmean0 = 210.15       ! black-body temperature of planet
      Tmean0 = (589.*(1.-albedo0)*cos(latitude)/(pi*emiss0*sigSB))**0.25 ! better estimate
      Tmean0 = Tmean0-5.
      write(34,*) '# initialized with temperature estimate at',latitude/d2r,'of',Tmean0,'K'
-     T(1:nz) = Tmean0 
+     T(1:nz) = Tmean0
   else
      T(1:nz) = Tb
      ! not so good when Fgeotherm is on
   endif
-  
+
   albedo = albedo0
   emiss = emiss0
   do i=1,nz
@@ -200,15 +200,15 @@ subroutine ajsub_mars(typeT, latitude, albedo0, pfrost, nz, z, ti, rhocv, &
   HA = 2.*pi*time            ! hour angle
 !  Qn=flux(marsR,marsDec,latitude,HA,albedo,fracir,fracdust,0.d0,0.d0)
   Qn = flux_mars77(marsR,marsDec,latitude,HA,albedo,fracir,fracdust)
-  !----loop over time steps 
+  !----loop over time steps
   do n=0,nsteps-1
-     time = (n+1)*dt         !   time at n+1 
+     time = (n+1)*dt         !   time at n+1
      tdays = time*(marsDay/earthDay) ! parenthesis may improve roundoff
      call generalorbit(tdays,a,ecc,omega,eps,marsLs,marsDec,marsR)
      HA = 2.*pi*mod(time,1.d0)  ! hour angle
 !     Qnp1=flux(marsR,marsDec,latitude,HA,albedo,fracir,fracdust,0.d0,0.d0)
      Qnp1 = flux_mars77(marsR,marsDec,latitude,HA,albedo,fracir,fracdust)
-     
+
      Tsurfold = Tsurf
      Fsurfold = Fsurf
      Told(1:nz) = T(1:nz)
@@ -219,7 +219,7 @@ subroutine ajsub_mars(typeT, latitude, albedo0, pfrost, nz, z, ti, rhocv, &
      if (Tsurf<Tco2frost .or. m>0.) then ! CO2 condensation
         T(1:nz) = Told(1:nz)
         call conductionT(nz,z,dt*marsDay,T,Tsurfold,Tco2frost,ti, &
-             &              rhocv,Fgeotherm,Fsurf) 
+             &              rhocv,Fgeotherm,Fsurf)
         Tsurf = Tco2frost
         dE = (- Qn - Qnp1 + Fsurfold + Fsurf + &
              &           emiss*sigSB*(Tsurfold**4+Tsurf**4))/2.
@@ -233,7 +233,7 @@ subroutine ajsub_mars(typeT, latitude, albedo0, pfrost, nz, z, ti, rhocv, &
         emiss = co2emiss
      endif
      Qn=Qnp1
-     
+
      if (time>=tmax-solsperyear) then
         Tmean1 = Tmean1 + Tsurf
         Tmean3 = Tmean3 + T(nz)
@@ -246,7 +246,7 @@ subroutine ajsub_mars(typeT, latitude, albedo0, pfrost, nz, z, ti, rhocv, &
      endif
 
   enddo  ! end of time loop
-  
+
   avrho1 = avrho1/nm
   if (present(avrho1prescribed)) then
      if (avrho1prescribed>=0.) avrho1=avrho1prescribed
@@ -259,7 +259,7 @@ subroutine ajsub_mars(typeT, latitude, albedo0, pfrost, nz, z, ti, rhocv, &
      avrho2 = rhosatav(nz) ! no ice
   endif
   avdrho = avrho2-avrho1
-  typeP = -9 
+  typeP = -9
   do i=1,nz
      if (porefill(i)>0.) then
         typeP = i  ! first point with ice
@@ -268,14 +268,14 @@ subroutine ajsub_mars(typeT, latitude, albedo0, pfrost, nz, z, ti, rhocv, &
   enddo
   if (typeP>0) then
      avdrhoP = rhosatav(typeP) - avrho1
-  else  
+  else
      avdrhoP = -9999.
   end if
 
   zdepthE = equildepth(nz, z, rhosatav, rhosatav0, avrho1)
 
   if (Fgeotherm>0.) then
-     Tb = Tmean1 
+     Tb = Tmean1
      typeG = 1   ! will be overwritten by depths_avmeth
      rlow = 2*rhosatav(nz)-rhosatav(nz-1)
   else
@@ -302,6 +302,4 @@ subroutine outputmoduleparameters
   write(6,'(2x,a12,1x,f5.3,2x,a16,1x,f5.3)') 'CO2 albedo=',co2albedo,'CO2 emissivity=',co2emiss
   print *,'  Thermal model equilibration time',EQUILTIME,'Mars years'
 end subroutine outputmoduleparameters
-
-
 

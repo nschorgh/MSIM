@@ -92,7 +92,7 @@ subroutine depths_avmeth(typeT, nz, z, rhosatav, rhosatav0, rlow, avrho1,  &
      Jpump1 = (rhosatav(i)-avrho1)/z(i)  ! <0 when stable
      ! yp is always <0
      help(i) = Jpump1 - eta(i)*yp(i)
-     leak = porefill(i)/B*(z(i)-zdepthFold)/(18./8314.)
+     leak = porefill(i)/B*(z(i)-zdepthFold)/(18./8314.5)
      !help(i) = help(i)-leak   ! optional
      if (help(i) <= 0.) then
         typeF=i
@@ -130,7 +130,7 @@ subroutine depths_avmeth(typeT, nz, z, rhosatav, rhosatav0, rlow, avrho1,  &
   !write(43,*) ypp
   !write(44,*) eta(1:nz)
   !write(45,*) (rhosatav(:)-avrho1)/z(:)
-  ypp(:) = ypp(:)*18./8314.
+  ypp(:) = ypp(:)*18./8314.5
   ! ypp values beyond nlb should not be used
 
 !-geothermal stuff
@@ -155,11 +155,11 @@ subroutine depths_avmeth(typeT, nz, z, rhosatav, rhosatav0, rlow, avrho1,  &
      do i=typeG,nz
         if (minval(eta(i:nz))<=0.) cycle  ! eta=0 means completely full
         cumfill=colint(porefill(:)/eta(:),z,nz,i,nz)
-        if (cumfill<yp(i)*18./8314.*B) then  ! usually executes on i=typeG
+        if (cumfill<yp(i)*18./8314.5*B) then  ! usually executes on i=typeG
            if (i>typeG) then
               write(34,*) '# adjustment to geotherm depth by',i-typeG
-              zdepthG = zint(yp(i-1)*18./8314.*B-cumfillabove, &  ! no good
-                   &        yp(i)*18./8314.*B-cumfill,z(i-1),z(i))
+              zdepthG = zint(yp(i-1)*18./8314.5*B-cumfillabove, &  ! no good
+                   &        yp(i)*18./8314.5*B-cumfill,z(i-1),z(i))
               if (zdepthG>z(i) .or. zdepthG<z(i-1)) write(34,*) &
                    & '# WARNING: zdepthG interpolation failed',i,z(i-1),zdepthG,z(i)
               newtypeG=i
@@ -211,7 +211,7 @@ pure subroutine icechanges_poreonly(nz,z,typeF,typeG,avdrhoP,ypp,B,porefill)
         if (typeF>0 .and. j>=typeF) exit ! don't retreat beyond typeF
         integ = colint(porefill(1:nz)*z(1:nz),z(1:nz),nz,1,j)
         erase = j
-        if (integ>B*avdrhoP*18./8314.) exit
+        if (integ>B*avdrhoP*18./8314.5) exit
      end do
      if (erase>0) porefill(1:erase)=0.
   endif
@@ -281,7 +281,7 @@ pure subroutine icechanges(nz,z,typeF,avdrho,avdrhoP,ypp, &
      if (typeP==typeT) then   ! new 2011-09-01
         beta = (1-icefrac)/(1-porosity)/icefrac
         beta = Diff*bigstep*beta*86400*365.24/icedensity
-        zdepthT = sqrt(2*beta*avdrho*18./8314. + zdepthT**2)
+        zdepthT = sqrt(2*beta*avdrho*18./8314.5 + zdepthT**2)
      endif
   endif
   if (zdepthT>z(nz)) zdepthT=-9999.
@@ -294,7 +294,7 @@ pure subroutine icechanges(nz,z,typeF,avdrho,avdrhoP,ypp, &
         if (zdepthT>=0. .and. z(j)>zdepthT) exit 
         integ = colint(porefill(1:nz)*z(1:nz),z(1:nz),nz,1,j)
         erase = j
-        if (integ>B*avdrhoP*18./8314.) exit
+        if (integ>B*avdrhoP*18./8314.5) exit
      end do
      if (erase>0) porefill(1:erase)=0.
   endif

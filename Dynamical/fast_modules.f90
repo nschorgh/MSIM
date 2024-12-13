@@ -8,7 +8,7 @@ module miscparameters
   real(8), parameter :: sigSB=5.6704e-8
   ! for reference here are some parameters that are hard coded
   !   mass of H2O molecule = 18
-  !   universal gas constant = 8314 
+  !   universal gas constant = 8314.5
   !   length of Earth year in days = 365.24
 end module miscparameters
 
@@ -40,7 +40,7 @@ module allinterfaces
      end subroutine icelayer_mars
   end interface
 
-  interface 
+  interface
      subroutine ajsub_mars(typeT, latitude, albedo0, pfrost, nz, z, ti, rhocv, &
           &  fracIR, fracDust, p0, ecc, omega, eps, avdrho, avdrhoP, avrho1, &
           &  Tb, zdepthE, typeF, zdepthF, ypp, porefill, Tmean1, Tmean3, &
@@ -48,23 +48,23 @@ module allinterfaces
        use miscparameters
        implicit none
        integer, intent(IN) :: nz, typeT
-       real(8), intent(IN) :: latitude 
+       real(8), intent(IN) :: latitude
        real(8), intent(IN) :: albedo0, pfrost, z(NMAX)
        real(8), intent(IN) :: ti(NMAX), rhocv(NMAX), fracIR, fracDust, p0
        real(8), intent(IN) :: ecc, omega, eps, porefill(nz)
-       real(8), intent(OUT) :: avdrho, avdrhoP 
+       real(8), intent(OUT) :: avdrho, avdrhoP
        real(8), intent(OUT) :: avrho1
        real(8), intent(INOUT) :: Tb, Tmean1
-       integer, intent(OUT) :: typeF 
-       real(8), intent(OUT) :: zdepthE, zdepthF 
-       real(8), intent(OUT) :: ypp(nz) 
+       integer, intent(OUT) :: typeF
+       real(8), intent(OUT) :: zdepthE, zdepthF
+       real(8), intent(OUT) :: ypp(nz)
        real(8), intent(OUT) :: Tmean3, zdepthG
        real(8), intent(IN) :: B
        integer, intent(OUT) :: typeG
        real(8), intent(IN), optional :: avrho1prescribed
      end subroutine ajsub_mars
   end interface
-  
+
   !end of fast_subs_mars.f90
   !begin fast_subs_univ.f90
 
@@ -97,7 +97,7 @@ module allinterfaces
        real(8), intent(IN) :: rhosatav0, rlow, avrho1
        integer, intent(OUT) :: typeF
        real(8), intent(INOUT) :: zdepthF
-       real(8), intent(IN) :: B 
+       real(8), intent(IN) :: B
        real(8), intent(OUT) :: ypp(nz), zdepthG
        integer, intent(INOUT) :: typeG
        real(8), external :: zint, deriv1_onesided, colint
@@ -111,7 +111,7 @@ module allinterfaces
        real(8) constriction
      end function constriction
   end interface
-  
+
   interface
      subroutine assignthermalproperties(nz,thIn,rhoc,ti,rhocv, &
           &                      typeT,icefrac,porosity,porefill)
@@ -154,7 +154,7 @@ module allinterfaces
   end interface
 
   !end of fast_subs_univ
-  !begin derivs.f90 
+  !begin derivs.f90
 
   interface
      subroutine deriv1(z,nz,y,y0,yNp1,yp)
@@ -211,24 +211,24 @@ module allinterfaces
 
   interface
      subroutine ajsub_exper(typeT, nz, z, ti, rhocv, pfrost, Tmean, Tampl, &
-          &     avdrho, avdrhoP, zdepthE, typeF, zdepthF, ypp, porefill, & 
+          &     avdrho, avdrhoP, zdepthE, typeF, zdepthF, ypp, porefill, &
           &     B, typeG, zdepthG)
        use miscparameters, only : NMAX, solsperyear, marsDay
        implicit none
        integer, intent(IN) :: nz, typeT
        real(8), intent(IN) :: z(NMAX), ti(NMAX), rhocv(NMAX), pfrost
        real(8), intent(IN) :: Tmean, Tampl
-       real(8), intent(OUT) :: avdrho, avdrhoP 
+       real(8), intent(OUT) :: avdrho, avdrhoP
        real(8), intent(OUT) :: zdepthE
-       integer, intent(OUT) :: typeF 
-       real(8), intent(INOUT) :: zdepthF 
+       integer, intent(OUT) :: typeF
+       real(8), intent(INOUT) :: zdepthF
        real(8), intent(OUT) :: ypp(nz)
        real(8), intent(IN) :: porefill(nz)
-       real(8), intent(IN) :: B 
+       real(8), intent(IN) :: B
        integer, intent(OUT) :: typeG
        real(8), intent(OUT) :: zdepthG
        real(8), external :: Tsurface, psv
-       real(8), external :: equildepth 
+       real(8), external :: equildepth
      end subroutine ajsub_exper
   end interface
   

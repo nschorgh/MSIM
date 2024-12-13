@@ -1,6 +1,6 @@
 program exper_fast
 !***********************************************************************
-! Retreat and growth of subsurface ice 
+! Retreat and growth of subsurface ice
 ! prescribed surface temperatures
 !***********************************************************************
   use miscparameters
@@ -24,10 +24,12 @@ program exper_fast
 
   ! set eternal grid
   call setgrid(nz,z,zmax,zfac)
-  open(unit=30,file='z',action='write',status='unknown')
+  open(unit=30,file='z.dat',action='write',status='unknown')
   write(30,'(999(f8.5,1x))') z(1:nz)
   close(30)
 
+  open(unit=36,file='porefill.dat',action='write',status='unknown')
+  
   icetime=0.
   porefill(1:nz) = 0.
   !zdepthT=-9999.
@@ -60,13 +62,3 @@ program exper_fast
      print *,icetime,zdepthT,zdepthF
   enddo
 end program exper_fast
-
-
-
-
-
-
-
-
-
-
