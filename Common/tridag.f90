@@ -16,7 +16,7 @@ PURE SUBROUTINE tridag(a,b,c,r,x,N)
   bet = b(1)
   x(1) = r(1)/b(1)
   do j = 2,N  ! downward sweep
-     scratch(j) = c(j-1)/bet     
+     scratch(j) = c(j-1)/bet
      bet = b(j)-a(j)*scratch(j)  ! must never be 0
      x(j) = ( r(j)-a(j)*x(j-1) ) / bet
   end do

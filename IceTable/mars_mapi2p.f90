@@ -3,7 +3,7 @@ program mars_mapi2p
 !   mars_mapi2p: program to calculate depth to ice table for a list of
 !            input parameters (can be the entire globe, can also be
 !            a list of slopes); incorporates terrain irradiance for
-!            planar slopes from a flat floor at a different temperature  
+!            planar slopes from a flat floor at a different temperature
 !
 !     Can be launched with mars_mapi2p_go.cmd
 !     1/20/05: Added new feature to bracket root before loop  -oded
@@ -13,15 +13,15 @@ program mars_mapi2p
 
   implicit none
   integer, parameter :: NS=10  ! number of slopes for each site
-  real*8, parameter :: pi=3.1415926535897932, d2r=pi/180., zero=0.
-  real*8, parameter :: marsDay=88775.244
+  real(8), parameter :: pi=3.1415926535897932, d2r=pi/180., zero=0.
+  real(8), parameter :: marsDay=88775.244
   
-  integer nz, iargc, job_nr, j, line_nr, k
-  real*8 dt, zmax, zfac, zdepth0, icefrac, zacc, zdepth0v(1)
-  real*8 latitude, thIn, albedo0, fracIR, fracDust, delta
-  real*8 Fgeotherm, rhoc, lon, Tfrost, pfrost, slpd, azFacd, patm
-  real*8 slp(NS), azFac(NS), zdepth(NS), avdrho(NS), Tb(NS), zz(NS), zerov(1)
-  real*8, external :: psv
+  integer nz, job_nr, j, line_nr, k
+  real(8) dt, zmax, zfac, zdepth0, icefrac, zacc, zdepth0v(1)
+  real(8) latitude, thIn, albedo0, fracIR, fracDust, delta
+  real(8) Fgeotherm, rhoc, lon, Tfrost, pfrost, slpd, azFacd, patm
+  real(8) slp(NS), azFac(NS), zdepth(NS), avdrho(NS), Tb(NS), zz(NS), zerov(1)
+  real(8), external :: psv
   character(40) infile, outfile
   character(10) line_nr_string, job_nr_string
 
@@ -35,14 +35,14 @@ program mars_mapi2p
   !icefrac = 0.0
   zacc = 0.1  ! desired min. relative accuracy of ice table depth
   
-  if (iargc() /= 2) then
+  if (command_argument_count() /=2) then
      print *,'USAGE: mars_mapi2p file.in job_nr'
      print *,"For example: 'a.out mapgrid.slp 2' uses 2nd line of file mapgrid.slp"
      stop
   endif
 
-  call getarg( 1, infile)
-  call getarg( 2, job_nr_string)
+  call get_command_argument( 1, infile)
+  call get_command_argument( 2, job_nr_string)
   read(job_nr_string,'(i4)') job_nr  ! string->integer
   
   write (*,*) 'infile:  ',infile
@@ -192,15 +192,15 @@ subroutine rtbisv(NS,x1,x2,xacc,fmid, &
 !***********************************************************************
   implicit none
   integer, intent(IN) :: NS, nz
-  real*8, intent(IN) :: x1(NS),x2(NS),xacc,latitude,albedo0,thIn
-  real*8, intent(INOUT) :: fmid(NS)
-  real*8, intent(OUT) :: zdepth(NS)
-  real*8, intent(IN) :: pfrost,rhoc,fracIR,fracDust,Fgeotherm,dt
-  real*8, intent(IN) :: zfac,icefrac,SlopeAngle(NS),azFac(NS),patm
+  real(8), intent(IN) :: x1(NS),x2(NS),xacc,latitude,albedo0,thIn
+  real(8), intent(INOUT) :: fmid(NS)
+  real(8), intent(OUT) :: zdepth(NS)
+  real(8), intent(IN) :: pfrost,rhoc,fracIR,fracDust,Fgeotherm,dt
+  real(8), intent(IN) :: zfac,icefrac,SlopeAngle(NS),azFac(NS),patm
   INTEGER, PARAMETER :: JMAX=40
   INTEGER j, k
-  REAL*8, dimension(NS) :: dx,f,xmid,Tb,xlower,xupper,fupper,flower
-  real*8 zmax
+  REAL(8), dimension(NS) :: dx,f,xmid,Tb,xlower,xupper,fupper,flower
+  real(8) zmax
   zmax = x2(2)
 
   ! flat slope (index 1)

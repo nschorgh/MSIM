@@ -22,29 +22,29 @@ subroutine jsub(zdepth, latitude, albedo0, thIn, pfrost, nz, &
 !  variable icefrac can also have meaning of porosity
 !***********************************************************************
   implicit none
-  real*8, parameter :: pi=3.1415926535897932, NULL=0.
-  real*8, parameter :: earthDay=86400., marsDay=88775.244, solsperyear=668.60
-  real*8, parameter :: sigSB=5.6704d-8, Lco2frost=6.0e5
-  real*8, parameter :: co2albedo=0.60, co2emiss=1.
+  real(8), parameter :: pi=3.1415926535897932, NULL=0.
+  real(8), parameter :: earthDay=86400., marsDay=88775.244, solsperyear=668.60
+  real(8), parameter :: sigSB=5.6704d-8, Lco2frost=6.0e5
+  real(8), parameter :: co2albedo=0.60, co2emiss=1.
 
   integer, intent(IN) :: nz, mode
-  real*8, intent(IN) :: zdepth, latitude, albedo0, thIn, pfrost, rhoc
-  real*8, intent(IN) :: fracIR, fracDust, patm, Fgeotherm, dt, zfac, icefrac
-  real*8, intent(INOUT) :: Tb
-  real*8, intent(OUT) :: avdrho, zequil
+  real(8), intent(IN) :: zdepth, latitude, albedo0, thIn, pfrost, rhoc
+  real(8), intent(IN) :: fracIR, fracDust, patm, Fgeotherm, dt, zfac, icefrac
+  real(8), intent(INOUT) :: Tb
+  real(8), intent(OUT) :: avdrho, zequil
   
   integer nsteps, n, i, nm
   integer iyr, imm, iday
-  real*8 T(nz),tmax, time, zmax, Tsurf
-  real*8 albedo, emiss0, emiss, Qn, Qnp1, tdays
-  real*8 marsR, marsLs, marsDec, HA
-  real*8 jd, temp1, dcor, dt0_j2000
-  real*8 ti(nz), rhocv(nz), z(nz), Fsurf, m, dE
-  real*8 Told(nz), Fsurfold, Tsurfold, Tmean1, Tmean2
-  real*8 Tpeak(nz), Tlow(nz), Tco2frost
-  real*8 rhosatav(nz), rhosatav0, rhoavs, Tbold, marsLsold, oldtime
+  real(8) T(nz),tmax, time, zmax, Tsurf
+  real(8) albedo, emiss0, emiss, Qn, Qnp1, tdays
+  real(8) marsR, marsLs, marsDec, HA
+  real(8) jd, temp1, dcor, dt0_j2000
+  real(8) ti(nz), rhocv(nz), z(nz), Fsurf, m, dE
+  real(8) Told(nz), Fsurfold, Tsurfold, Tmean1, Tmean2
+  real(8) Tpeak(nz), Tlow(nz), Tco2frost
+  real(8) rhosatav(nz), rhosatav0, rhoavs, Tbold, marsLsold, oldtime
   integer, external :: julday
-  real*8, external :: flux_mars77, psv, tfrostco2, equildepth
+  real(8), external :: flux_mars77, psv, tfrostco2, equildepth
 
   select case (mode)
   case (0) ! full mode
@@ -213,8 +213,8 @@ end subroutine jsub
 function zint(y1,y2,z1,z2)
   ! linearly interpolate between two values
   implicit none
-  real*8 zint
-  real*8, intent(IN) :: y1, y2, z1, z2
+  real(8) zint
+  real(8), intent(IN) :: y1, y2, z1, z2
   zint = (y1*z2 - y2*z1)/(y1-y2)  ! yint = 0
 end function zint
 
@@ -223,16 +223,16 @@ end function zint
 function equildepth(nz, z, rhosatav, rhosatav0, avrhoatm)
 !***********************************************************************
 ! returns equilibrium depth for given thermal properties
-! find depth where rhosatav = avrhoatm	     
+! find depth where rhosatav = avrhoatm
 ! this is not the true (final) equilibrium depth because of tifeedback
 !***********************************************************************
   implicit none
-  real*8 equildepth
+  real(8) equildepth
   integer, intent(IN) :: nz
-  real*8, intent(IN) :: z(nz), rhosatav(nz), rhosatav0, avrhoatm
+  real(8), intent(IN) :: z(nz), rhosatav(nz), rhosatav0, avrhoatm
   integer i, kE
-  real*8 zdepthE
-  real*8, external :: zint
+  real(8) zdepthE
+  real(8), external :: zint
   
   zdepthE = -9999.  ! unstable at all depths
   kE = -9

@@ -1,10 +1,10 @@
 program mars_thermal2p
 !****************************************************************************
-!   mars_thermal2p: program to calculate the temperature on a planar slope on 
+!   mars_thermal2p: program to calculate the temperature on a planar slope on
 !                   Mars based on direct solar irradiance, subsurface heat
 !                   conduction, sky irradiance, and terrain irradiance;
 !                   a second 1d thermal model is run to obtain an approximate
-!                   terrain irradiance 
+!                   terrain irradiance
 !
 !   Eqn: T_t = (D*T_z)_z   where D=k/(rho*c)
 !   BC (z=0): Q(t) + k*T_z = em*sig*T^4 + L*dm/dt
@@ -78,14 +78,14 @@ program mars_thermal2p
   !jd = dble(julday(imm,iday,iyr)) + 0.250  !  JD for noon UTC on iyear/imm/iday
   jd_end = dble(julday(imm,iday,iyr)) + 1
   jd = jd_end - tmax*marsDay/earthDay
-        
+  
   temp1 = (jd-2451545.d0)/36525.d0
   dcor = (64.184d0 + 95.*temp1 + 35.*temp1**2) ! correction in sec
   ! All time is referenced to dt0_j2000
-  dt0_j2000 = jd + dcor/earthDay - 2451545.d0 
+  dt0_j2000 = jd + dcor/earthDay - 2451545.d0
   !call marsorbit(dt0_j2000,0.d0,marsLs,marsDec,marsR)
 
-  lonW = mod(360.-longitude,360.)
+  lonW = mod(360.-longitude,360.d0)
   call marsclock24(jd,buf,marsLs,marsDec,marsR,lonW,LTST)
   HA = 2.*pi*mod(LTST+12,24.d0)/24.
   
@@ -116,7 +116,7 @@ program mars_thermal2p
   T(1:nz,:) = Tinit
   Tsurf(:) = Tinit
   latitude = latitude*d2r
-  Tmean=0.; Tmean2=0.; nm=0 
+  Tmean=0.; Tmean2=0.; nm=0
   
   call setgrid(nz,z,zmax,zfac)
   if (z(6)>delta) then
@@ -133,7 +133,7 @@ program mars_thermal2p
      do i=1,nz  ! assign thermal properties
         ti(i,k) = thermalInertia
         rhocv(i,k) = rhoc
-        if (zdepth(k)>=0. .and. z(i)>zdepth(k)) then 
+        if (zdepth(k)>=0. .and. z(i)>zdepth(k)) then
            call soilthprop(0.4d0,1.d0,rhoc,thermalInertia,1,rhocv(i,k),ti(i,k))
            ! call soilthprop(zero,zero,zero,zero,3,rhocv(i,k),ti(i,k),zero)
         endif
@@ -156,11 +156,11 @@ program mars_thermal2p
   call flux_mars2(marsR,marsDec,latitude,HA,fracir,fracdust, &
        &          surfaceSlope*d2r,azFac*d2r,zero,Qdir(2),Qscat,Qlw)
   Qn(2) = (1-albedo(2))*(Qdir(2)+Qscat*skyviewfactor) + emiss(1)*Qlw*skyviewfactor
-    
   
-  !-loop over time steps 
+  
+  !-loop over time steps
   do n=0,nsteps-1
-     time = (n+1)*dt   !   time at n+1 
+     time = (n+1)*dt   !   time at n+1
      !  Solar insolation and IR at future time step
      tdays = time*(marsDay/earthDay)  ! parenthesis may improve roundoff
      
@@ -200,7 +200,7 @@ program mars_thermal2p
         if (Tsurf(k)<Tco2frost .or. m(k)>0.) then   ! CO2 frost
            T(1:nz,k) = Told(1:nz)
            call conductionT(nz,z,dtsec,T(:,k),Tsurfold,Tco2frost, &
-                &           ti(:,k),rhocv(:,k),Fgeotherm,Fsurf(k)) 
+                &           ti(:,k),rhocv(:,k),Fgeotherm,Fsurf(k))
            Tsurf(k) = Tco2frost
            dE = (- Qn(k) - Qnp1(k) + Fsurfold + Fsurf(k) + &
                 &  emiss(k)*sigSB*(Tsurfold**4+Tsurf(k)**4))/2.

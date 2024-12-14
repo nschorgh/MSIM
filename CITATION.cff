@@ -5,7 +5,7 @@ authors:
     given-names: Norbert
     orcid: https://orcid.org/0000-0002-5821-4066
 title: "Mars Subsurface Ice Model (MSIM) Program Collection"
-version: 1.2.0
-doi: 10.5281/zenodo.6499709
+version: 1.2.1
+doi: 10.5281/zenodo.6499708
 url: "https://github.com/nschorgh/MSIM/"
-date-released: 2022-04-19
+date-released: 2023-04-15

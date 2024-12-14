@@ -4,15 +4,15 @@ program mars_mapii
 !             a list of input parameters (can be the entire globe)
 !***********************************************************************
   implicit none
-  real*8, parameter :: pi=3.1415926535897932, d2r=pi/180., marsDay=88775.244
+  real(8), parameter :: pi=3.1415926535897932, d2r=pi/180., marsDay=88775.244
 
   integer nz, k
-  real*8 dt, zmax, zfac, zdepth, icefrac, zacc
-  real*8 latitude, thIn, albedo0, fracIR, fracDust, delta
-  real*8 Fgeotherm, rhoc, lon, Tfrost, pfrost
-  real*8 avdrho, junk, Tb, patm !, htopo
-  real*8 zequil, zdepth_old, stretch
-  real*8, external :: psv, rtbis, frostpoint, stretchfactor
+  real(8) dt, zmax, zfac, zdepth, icefrac, zacc
+  real(8) latitude, thIn, albedo0, fracIR, fracDust, delta
+  real(8) Fgeotherm, rhoc, lon, Tfrost, pfrost
+  real(8) avdrho, junk, Tb, patm !, htopo
+  real(8) zequil, zdepth_old, stretch
+  real(8), external :: psv, rtbis, frostpoint, stretchfactor
       
   !-set input parameters
   dt=0.02
@@ -95,7 +95,7 @@ end program mars_mapii
 
 function stretchfactor(thIn,rhoc,porosity,layertype,icefrac)
 !***********************************************************************
-! stretchfactor: returns ratio of sqrt(thermal diffusivities), a  
+! stretchfactor: returns ratio of sqrt(thermal diffusivities), a
 !                quantity relevant for the change of the temperature
 !                gradient across the ice table
 !    
@@ -103,15 +103,15 @@ function stretchfactor(thIn,rhoc,porosity,layertype,icefrac)
 !           rhoc = heat capacity per volume of ice-free regolith [J/m^3]
 !           thIn = thermal inertia of ice-free regolith [SI-units]
 !           porosity = void space / total volume
-!           layertypes are explained below  
+!           layertypes are explained below
 !           icefrac = fraction of ice in icelayer
 !***********************************************************************
   implicit none
-  real*8 stretchfactor
+  real(8) stretchfactor
   integer, intent(IN) :: layertype
-  real*8, intent(IN) :: thIn, rhoc, porosity, icefrac
-  real*8 newrhoc, newti
-  real*8, parameter :: NULL=0.
+  real(8), intent(IN) :: thIn, rhoc, porosity, icefrac
+  real(8) newrhoc, newti
+  real(8), parameter :: NULL=0.
   
   select case (layertype)
   case (1)  ! interstitial ice
@@ -123,7 +123,7 @@ function stretchfactor(thIn,rhoc,porosity,layertype,icefrac)
   case (4)  ! ice + rock + nothing else
      call soilthprop(porosity,NULL,rhoc,NULL,4,newrhoc,newti,NULL)
   case default
-     error stop 'invalid layer type'
+     stop 'invalid layer type'
   end select
 
   ! thermal conductivity k = I^2/(rho*c)

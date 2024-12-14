@@ -2,7 +2,7 @@ subroutine marsorbit(dt0,tj,Ls,dec,r)
 !=======================================================
 ! Subroutine to return various orbital parameters
 !
-! INPUTS: 
+! INPUTS:
 ! dt0 is the reference dt_J2000
 ! tj is the time (in days) relative to the reference day
 !
@@ -23,14 +23,14 @@ subroutine marsorbit(dt0,tj,Ls,dec,r)
 ! Reformatted into free-form Fortran, 2018
 !=======================================================
   implicit none
-  real*8, intent(IN) :: dt0,tj
-  real*8, intent(OUT) :: Ls,dec,r
+  real(8), intent(IN) :: dt0,tj
+  real(8), intent(OUT) :: Ls,dec,r
   
 ! Some constants
-  real*8, parameter :: pi=3.1415926535897932,d2r=pi/180.d0
+  real(8), parameter :: pi=3.1415926535897932,d2r=pi/180.d0
   integer i
-  real*8 alpha, PBS, M, dj, eps
-  real*8 A(7),tau(7),phi(7),c1,c2,c3,c4,c5
+  real(8) alpha, PBS, M, dj, eps
+  real(8) A(7),tau(7),phi(7),c1,c2,c3,c4,c5
   
   data A/0.007d0,0.006d0,0.004d0,0.004d0,0.002d0,0.002d0,0.002d0/
   data tau/2.2353d0,2.7543d0,1.1177d0,15.7866d0,2.1354d0,2.4694d0,32.8493d0/
@@ -56,7 +56,7 @@ subroutine marsorbit(dt0,tj,Ls,dec,r)
   M=c2 + c3*dj  ! mean anomaly in radians
   alpha=270.3863d0 + 0.52403840d0*dj ! fictitious mean sun angle in degrees
   
-! Ls in degrees      
+! Ls in degrees
   Ls = alpha + (10.691d0 + 3.d-7*dj)*sin(M) + 0.623d0*sin(2*M) +  &
        &     0.05d0*sin(3*M) + 0.005d0*sin(4*M) + 0.0005d0*sin(5*M) + PBS
   Ls=mod(Ls,360.d0)*d2r  !  Ls in radians
@@ -77,26 +77,26 @@ subroutine marsclock24(JDUT,Deltat_J2000,Ls,dec,RM,Longitude_W,LTST)
   ! see also  www.giss.nasa.gov/tools/mars24/help/algorithm.html
   !***********************************************************************
   implicit none
-  real*8, intent(IN) :: JDUT !  Julian Date
-  real*8 temp1, dcor
-  real*8 JDTT ! terrestrial julian date
-  real*8, intent(OUT) :: Deltat_J2000  ! days since J2000
-  real*8, intent(OUT) :: Ls   ! [radian]
-  real*8, intent(OUT) :: dec, RM
+  real(8), intent(IN) :: JDUT !  Julian Date
+  real(8) temp1, dcor
+  real(8) JDTT ! terrestrial julian date
+  real(8), intent(OUT) :: Deltat_J2000  ! days since J2000
+  real(8), intent(OUT) :: Ls   ! [radian]
+  real(8), intent(OUT) :: dec, RM
 
   integer i
-  real*8 A(7), tau(7), phi(7) 
-  real*8 M, alpha_FMS, PBS
-  real*8 numinusM   ! (degree)
+  real(8) A(7), tau(7), phi(7)
+  real(8) M, alpha_FMS, PBS
+  real(8) numinusM   ! (degree)
   data A/ 0.0071, 0.0057, 0.0039, 0.0037, 0.0021, 0.0020, 0.0018 /
   !data A/ 0.007d0,0.006d0,0.004d0,0.004d0,0.002d0,0.002d0,0.002d0 /
   data tau/2.2353d0, 2.7543d0, 1.1177d0, 15.7866d0, 2.1354d0, 2.4694d0, 32.8493d0/
   data phi/49.409d0, 168.173d0, 191.837d0, 21.736d0, 15.704d0, 95.528d0, 49.095d0/
-  real*8, parameter :: pi=3.1415926535897932d0, d2r=pi/180.
+  real(8), parameter :: pi=3.1415926535897932d0, d2r=pi/180.
 
-  real*8, intent(IN) :: Longitude_W ! west longitude (degree)
-  real*8 EOT, MST
-  real*8, intent(OUT) :: LTST  ! (hour)
+  real(8), intent(IN) :: Longitude_W ! west longitude (degree)
+  real(8) EOT, MST
+  real(8), intent(OUT) :: LTST  ! (hour)
       
   ! Time offset from J2000 epoch (UT)
   temp1 = (JDUT-2451545.0d0)/36525.d0
@@ -128,7 +128,7 @@ subroutine marsclock24(JDUT,Deltat_J2000,Ls,dec,RM,Longitude_W,LTST)
   enddo
   
   ! Equation of Center (AM2000, eqs. 19 and 20)
-  M = M*d2r 
+  M = M*d2r
   numinusM =(10.691d0 + 3.0d-7*Deltat_J2000)*sin(M)+0.623d0*sin(2*M) &
        &  + 0.050d0*sin(3*M) + 0.005d0*sin(4*M) + 0.0005d0*sin(5*M) + PBS ! (degree)
   
@@ -163,10 +163,10 @@ end subroutine marsclock24
 function psurf_season(psurfav,Ls)
   ! returns seasonally varying surface pressure on present-day Mars
   implicit none
-  real*8 psurf_season ! [Pa]
-  real*8, intent(IN) :: Ls      ! [radians]
-  real*8, intent(IN) :: psurfav ! annual average surface pressure [Pa]
-  real*8, parameter :: pi=3.1415926535897932, d2r=pi/180.
+  real(8) psurf_season ! [Pa]
+  real(8), intent(IN) :: Ls      ! [radians]
+  real(8), intent(IN) :: psurfav ! annual average surface pressure [Pa]
+  real(8), parameter :: pi=3.1415926535897932, d2r=pi/180.
 
   ! equation from Smith et al., Chapter 4 of 
   !'The Atmosphere and Climate of Mars', Cambridge Univ. Press 2017, p58

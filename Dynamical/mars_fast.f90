@@ -7,7 +7,7 @@ program mars_fast
   use allinterfaces
   implicit none
   integer, parameter :: NP=1   ! # of sites
-  integer nz, i, k, ierr, iargc
+  integer nz, i, k, ierr
   real(8) zfac, zmax, delta, z(NMAX), icetime, porosity, icefrac
   real(8), dimension(NP) :: latitude, albedo, thIn, rhoc
   real(8), dimension(NP) :: pfrost, p0, htopo
@@ -19,10 +19,10 @@ program mars_fast
   character(10) ext
   real(8), external :: smartzfac
 
-  if (iargc() /= 1) then
+  if(command_argument_count() /= 1) then
      stop 'USAGE: icages ext'
   endif
-  call getarg( 1, ext )
+  call get_command_argument( 1, ext )
 
   if (NP>100) stop 'subroutine icelayer_mars cannot handle this many sites'
 

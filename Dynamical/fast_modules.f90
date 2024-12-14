@@ -238,8 +238,8 @@ module allinterfaces
   interface
      pure function flux_mars77(R,decl,latitude,HA,albedo,fracir,fracscat)
        implicit none
-       real*8 flux_mars77
-       real*8, intent(IN) :: R,decl,latitude,HA,albedo,fracIR,fracScat
+       real(8) flux_mars77
+       real(8), intent(IN) :: R,decl,latitude,HA,albedo,fracIR,fracScat
      end function flux_mars77
   end interface
 

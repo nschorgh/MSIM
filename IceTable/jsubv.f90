@@ -21,34 +21,34 @@ subroutine jsubv(NS, zdepth, latitude, albedo0, thIn, pfrost, nz, &
 !  Grid: surface is at z=0; T(i) is at z(i)
 !***********************************************************************
   implicit none
-  real*8, parameter :: pi=3.1415926535897932, d2r=pi/180., zero=0.
-  real*8, parameter :: earthDay=86400., marsDay=88775.244, solsperyear=668.60
-  real*8, parameter :: sigSB=5.6704d-8, Lco2frost=6.0e5
-  real*8, parameter :: co2albedo=0.65, co2emiss=1.
+  real(8), parameter :: pi=3.1415926535897932, d2r=pi/180., zero=0.
+  real(8), parameter :: earthDay=86400., marsDay=88775.244, solsperyear=668.60
+  real(8), parameter :: sigSB=5.6704d-8, Lco2frost=6.0e5
+  real(8), parameter :: co2albedo=0.65, co2emiss=1.
 
   integer, intent(IN) :: NS, nz, mode
-  real*8, intent(IN) :: zdepth(NS), latitude, albedo0, thIn, pfrost, rhoc
-  real*8, intent(IN) :: fracIR, fracDust, patm, Fgeotherm, dt, zfac, icefrac
-  real*8, intent(IN) :: SlopeAngle(NS), azFac(NS)
-  real*8, intent(INOUT) :: Tb(NS)
-  real*8, intent(OUT) :: avdrho(NS)
+  real(8), intent(IN) :: zdepth(NS), latitude, albedo0, thIn, pfrost, rhoc
+  real(8), intent(IN) :: fracIR, fracDust, patm, Fgeotherm, dt, zfac, icefrac
+  real(8), intent(IN) :: SlopeAngle(NS), azFac(NS)
+  real(8), intent(INOUT) :: Tb(NS)
+  real(8), intent(OUT) :: avdrho(NS)
 
   logical, parameter :: outf = .false.  ! additional output
   integer nsteps, n, i, nm, k, i0(NS)
   integer iyr, imm, iday
 
-  real*8 T(nz,NS),tmax, time, zmax, emiss(NS), albedo(NS)
-  real*8 Qn(NS), Qnp1(NS), tdays, dtsec
-  real*8 marsR, marsLs, marsDec, HA
-  real*8 jd, temp1, dcor, dt0_j2000
-  real*8 Tsurf(NS), z(nz,NS), ti(nz,NS), rhocv(nz,NS)
-  real*8 Told(nz), Tsurfold, Fsurf(NS), Fsurfold, m(NS), dE, Tco2frost
-  real*8 Tmean1(NS), Tmean2(NS), rhoavs(NS), rhoavb(NS), Tbold(NS)
-  real*8 Qmean(NS), Qland(NS)
-  real*8 marsLsold, emiss0
-  real*8 Qdir, Qscat, Qlw, skyviewfactor(NS), Qdir1
+  real(8) T(nz,NS),tmax, time, zmax, emiss(NS), albedo(NS)
+  real(8) Qn(NS), Qnp1(NS), tdays, dtsec
+  real(8) marsR, marsLs, marsDec, HA
+  real(8) jd, temp1, dcor, dt0_j2000
+  real(8) Tsurf(NS), z(nz,NS), ti(nz,NS), rhocv(nz,NS)
+  real(8) Told(nz), Tsurfold, Fsurf(NS), Fsurfold, m(NS), dE, Tco2frost
+  real(8) Tmean1(NS), Tmean2(NS), rhoavs(NS), rhoavb(NS), Tbold(NS)
+  real(8) Qmean(NS), Qland(NS)
+  real(8) marsLsold, emiss0
+  real(8) Qdir, Qscat, Qlw, skyviewfactor(NS), Qdir1
   integer, external :: julday
-  real*8, external :: psv, tfrostco2
+  real(8), external :: psv, tfrostco2
 
   select case (mode)
   case (0) ! full mode
@@ -101,7 +101,7 @@ subroutine jsubv(NS, zdepth, latitude, albedo0, thIn, pfrost, nz, &
   marsLsold = -1.e32
   Tbold(:) = -1.e32
 
-  Tmean1(:)=0.; Tmean2(:)=0.; nm=0   
+  Tmean1(:)=0.; Tmean2(:)=0.; nm=0
   rhoavs(:)=0.; rhoavb(:)=0.
   Qmean(:)=0.; Qland(:)=0.
 
@@ -164,7 +164,7 @@ subroutine jsubv(NS, zdepth, latitude, albedo0, thIn, pfrost, nz, &
 
      do k=1,NS
         Tsurfold = Tsurf(k)
-        Fsurfold = Fsurf(k)     
+        Fsurfold = Fsurf(k)
         Told(1:nz) = T(1:nz,k)
         if (m(k)<=0.) then
            call conductionQ(nz,z(:,k),dtsec,Qn(k),Qnp1(k),T(:,k),ti(:,k), &
