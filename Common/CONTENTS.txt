@@ -35,6 +35,9 @@ derivs.f90:
 grids.f90:
 	creates appropriate 1D grids, and contains other grid-related functions
 
+julday.f90:
+	calculates Julian day number from calendar date
+
 soilthprop_mars.f90:
 	thermal properties of icy soil on Mars
 
@@ -46,18 +49,11 @@ psvco2.f:
        	psvco2: vapor pressure of CO2
 	tfrostpointco2: inverse of psvco2
 
+tridag.f90:
+	solver for tridiagonal system
+
 makefile:
 	shows file dependencies
-
-
-
-3RD PARTY FUNCTIONS AND SUBROUTINES FROM NUMERICAL RECIPES(C)
-
-tridag.for: 
-	from Numerical Recipes (C), without stop and pause statements, NMAX=1000
-
-julday.for: 
-	Julian date, from Numerical Recipes (C), but without the pause statement
 
 
 

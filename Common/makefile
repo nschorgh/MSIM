@@ -15,9 +15,6 @@ common-mars: generalorbit.o flux_noatm.o conductionQ.o conductionT.o tridag.o \
 %.o:	%.f makefile
 	$(FC) $(FFLAGS) -c $<
 
-%.o:	%.for makefile
-	$(FC) $(FFLAGS) -c $<
-
 %.o:	%.f90 makefile
 	$(FC) $(FFLAGS) -c $<
 

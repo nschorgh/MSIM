@@ -71,8 +71,6 @@ Most of the MSIM program collection was written 2001-2009, as part of a series o
 
 For thermal and ice evolution models of airless bodies see [Planetary-Code-Collection](https://github.com/nschorgh/Planetary-Code-Collection). A three-dimensional surface energy balance model for Mars and airless bodies is also found in the Planetary-Code-Collection.  
 
-Third party source code from Numerical Recipes is covered by a separate copyright. These are files ending with `.for`.  
-
 Most of the code was developed with a `gfortran` compiler on Intel processors. Many components were also run on various Linux clusters, sometimes using other compilers. The non-portable `real(8)` and `real*8` are meant to correspond to an 8-byte floating point number.  
 
 
