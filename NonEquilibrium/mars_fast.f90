@@ -149,5 +149,3 @@ program mars_fast
 501 format (f10.0,2x,f7.3,2x,f10.4,2(2x,f6.2),2x,f9.3,2x,g11.4)
   
 end program mars_fast
-
-

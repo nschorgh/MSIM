@@ -1,4 +1,4 @@
-Dynamical/
+NonEquilibrium/
 
 M-SIM Collection: Fast Asynchronously Coupled Model of Subsurface-Atmosphere Exchange
 =====================================================================================

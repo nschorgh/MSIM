@@ -70,7 +70,7 @@ subroutine soilthprop(porosity,fill,rhocobs,tiobs,layertype, &
      newti = sqrt(newrhoc*k)
 
   case default
-     error stop 'invalid layer type'
+     stop 'invalid layer type'
      
   end select
   
@@ -119,7 +119,7 @@ subroutine smartgrid(nz,z,zdepth,thIn,rhoc,porosity,ti,rhocv,layertype,icefrac)
      case (4)  ! ice + rock + nothing else (ice-cemented soil)
         call soilthprop(porosity,NULL,rhoc,NULL,4,newrhoc,newti,NULL)
      case default
-        error stop 'invalid layer type'
+        stop 'invalid layer type'
      end select
 
      ! Thermal skin depth is proportional to sqrt(kappa)

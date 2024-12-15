@@ -114,9 +114,10 @@ program mars_mapi2p
      zdepth = -9999.
   else
      zdepth0v = zdepth0
-     call rtbisv(1, spread(delta/4.,1,1), spread(zmax,1,1), zacc, avdrho(1), &
-          &     latitude*d2r, albedo0, thIn, pfrost, nz, rhoc, fracIR, fracDust, &
-          &     patm, Fgeotherm, dt, zfac, icefrac, zerov, zerov, zdepth0v)
+     call root_bisect_v(1, spread(delta/4.,1,1), spread(zmax,1,1), zacc, &
+          &    avdrho(1), latitude*d2r, albedo0, thIn, pfrost, nz, rhoc, &
+          &    fracIR, fracDust, patm, Fgeotherm, dt, zfac, icefrac, zerov, &
+          &    zerov, zdepth0v)
      zdepth0 = zdepth0v(1)
   endif
   print *,'Equilibrium ice table depth on flat slope = ',zdepth0
@@ -136,7 +137,7 @@ program mars_mapi2p
   where (avdrho>=0.) zdepth= -9999.  ! no ice
   if (minval(avdrho(2:NS))<0.) then  ! stable somewhere
      zz(1)=zdepth0;  zz(2:NS) = spread(delta/4.,1,NS-1)
-     call rtbisv(NS,zz,(/ zdepth0, spread(zmax,1,NS-1) /), &
+     call root_bisect_v(NS,zz,(/ zdepth0, spread(zmax,1,NS-1) /), &
           &     zacc,avdrho(:), &
           &     latitude*d2r,albedo0,thIn,pfrost,nz,rhoc,fracIR, &
           &     fracDust,patm,Fgeotherm,dt,zfac,icefrac,slp(:),azFac(:),zdepth(:))
@@ -159,7 +160,7 @@ end program mars_mapi2p
 
 
       
-subroutine rtbisv(NS,x1,x2,xacc,fmid, &
+subroutine root_bisect_v(NS,x1,x2,xacc,fmid, &
      &     latitude,albedo0,thIn,pfrost,nz,rhoc,fracIR,fracDust,patm, &
      &     Fgeotherm,dt,zfac,icefrac,SlopeAngle,azFac,zdepth)
 !***********************************************************************
@@ -197,15 +198,16 @@ subroutine rtbisv(NS,x1,x2,xacc,fmid, &
   real(8), intent(OUT) :: zdepth(NS)
   real(8), intent(IN) :: pfrost,rhoc,fracIR,fracDust,Fgeotherm,dt
   real(8), intent(IN) :: zfac,icefrac,SlopeAngle(NS),azFac(NS),patm
-  INTEGER, PARAMETER :: JMAX=40
+  INTEGER, PARAMETER :: JMAX=30
   INTEGER j, k
   REAL(8), dimension(NS) :: dx,f,xmid,Tb,xlower,xupper,fupper,flower
   real(8) zmax
+  
   zmax = x2(2)
 
   ! flat slope (index 1)
-  if (x1(1)/=x2(1)) stop 'rtbisv: incorrect input'
-  if (NS<=1) stop 'rtbisv: NS needs to be larger than 1'
+  if (x1(1)/=x2(1)) stop 'root_bisect_v: incorrect input'
+  if (NS<=1) stop 'root_bisect_v: NS needs to be larger than 1'
   if (x1(1)<0.) then
      xmid = zmax
      dx(1) = 0.
@@ -242,7 +244,7 @@ subroutine rtbisv(NS,x1,x2,xacc,fmid, &
      endif
   enddo
   if (maxval(f)<0.) return  ! ice stable at the uppermost location everywhere
-  if (minval(f*fmid)>=0.) stop 'root must be bracketed in rtbis'
+  if (minval(f*fmid)>=0.) stop 'root must be bracketed in root_bisection'
   xupper=x1; fupper=f
   xlower=x2; flower=fmid
   do k=2,NS
@@ -250,12 +252,12 @@ subroutine rtbisv(NS,x1,x2,xacc,fmid, &
         zdepth(k) = x2(k)
         dx(k) = x1(k)-x2(k)
      end if
-     if (fmid(k)>0. .and. f(k)<0.) stop 'rtbisv: impossible case'
+     if (fmid(k)>0. .and. f(k)<0.) stop 'root_bisectionv: impossible case'
   enddo
   do j=1,JMAX
      do k=2,NS
         if (fupper(k)*flower(k)<0.) then ! case II
-           dx(k) = dx(k)*.5
+           dx(k) = dx(k)/2.
            xmid(k) = zdepth(k)+dx(k)
         endif
      end do
@@ -292,7 +294,5 @@ subroutine rtbisv(NS,x1,x2,xacc,fmid, &
         return
      endif
   enddo
-  print *,'too many bisections in rtbisv'
-end subroutine rtbisv
-
-
+  print *,'too many bisections in root_bisectionv'
+end subroutine root_bisect_v

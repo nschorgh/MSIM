@@ -16,8 +16,8 @@ C***********************************************************************
       real*8 latitude, thIn, albedo0, fracIR, fracDust, delta
       real*8 Fgeotherm, rhoc, lon, Tfrost, pfrost
       real*8 avdrho, junk, junk2, Tb, patm !, htopo
-      real*8 psv, rtbis, frostpoint
-      external psv, rtbis, frostpoint
+      real*8 psv, root_bisect, frostpoint
+      external psv, root_bisect, frostpoint
 
 C-----set input parameters
       !dt=0.01
@@ -54,7 +54,7 @@ c      open(unit=35,file='rhosatav',status='unknown')
          !read(20,*,end=80) lon,latitude,albedo0,thIn,pfrost,patm
 
          !patm=520.*exp(-htopo/10800.)
-         fracIR=0.04*patm/600.; fracDust=0.02*patm/600.  ! use if patm is available
+         fracIR=0.04*patm/600.; fracDust=0.02*patm/600. ! use if patm is available
 
          !Tfrost = frostpoint(pfrost)
          pfrost = psv(Tfrost)
@@ -78,7 +78,7 @@ C        Empirical relation from Mellon & Jakosky:
          if (avdrho>=0.) then 
             zdepth=-9999.
          else  
-            zdepth = rtbis(delta/2.,zmax,zacc,avdrho,
+            zdepth = root_bisect(delta/2.,zmax,zacc,avdrho,
      &           latitude*d2r,albedo0,thIn,pfrost,nz,rhoc,
      &           fracIR,fracDust,patm,Fgeotherm,dt,zfac,icefrac)
             print *,'Equilibrium ice table depth= ',zdepth
@@ -96,14 +96,14 @@ C        Empirical relation from Mellon & Jakosky:
 
 
 
-      FUNCTION rtbis(x1,x2,xacc,fmid,
+      function root_bisect(x1,x2,xacc,fmid,
      &     latitude,albedo0,thIn,pfrost,nz,rhoc,fracIR,fracDust,patm,
      &     Fgeotherm,dt,zfac,icefrac)
-C     finds root with bisection method a la Numerical Recipes (C)
+C     finds root with bisection method
       implicit none
       INTEGER JMAX
-      REAL*8 rtbis,x1,x2,xacc
-      PARAMETER (JMAX=40)
+      REAL*8 root_bisect,x1,x2,xacc
+      PARAMETER (JMAX=30)
       INTEGER j,nz
       REAL*8 dx,f,fmid,xmid,Tb,rhoc
       real*8 latitude,albedo0,thIn,pfrost,fracIR,fracDust,Fgeotherm,dt
@@ -123,19 +123,19 @@ C     finds root with bisection method a la Numerical Recipes (C)
      &     latitude,albedo0,thIn,pfrost,nz,rhoc,fracIR,fracDust,
      &     patm,Fgeotherm,dt,zfac,icefrac,0,Tb,f,junk2)
       print *,x1,f
-      if (f*fmid>=0.) stop 'root must be bracketed in rtbis'
+      if (f*fmid>=0.) stop 'root must be bracketed in root_bisect'
       if (f<0.) then
-        rtbis=x1
+        root_bisect=x1
         dx=x2-x1
       else
-        rtbis=x2
+        root_bisect=x2
         dx=x1-x2
       endif
       xupper=x1; fupper=f
       xlower=x2; flower=fmid
       do j=1,JMAX
-        dx=dx*.5
-        xmid=rtbis+dx
+        dx=dx/2.
+        xmid=root_bisect+dx
         Tb = -1.e32
         call jsub(xmid,
      &       latitude,albedo0,thIn,pfrost,nz/2,rhoc,fracIR,fracDust,
@@ -145,18 +145,16 @@ C     finds root with bisection method a la Numerical Recipes (C)
      &       patm,Fgeotherm,dt,zfac,icefrac,0,Tb,fmid,junk2)
         print *,xmid,fmid
         if(fmid<=0.) then
-           rtbis=xmid
+           root_bisect=xmid
            xlower=xmid; flower=fmid
         else
            xupper=xmid; fupper=fmid
         endif
         if(abs(dx/xmid)<xacc .or. fmid==0.) then
 c----------do linear interpolation at last
-           rtbis = (fupper*xlower - flower*xupper)/(fupper-flower)
+           root_bisect = (fupper*xlower - flower*xupper)/(fupper-flower)
            return
         endif
       enddo
-      stop 'too many bisections in rtbis'
-      END
-
-
+      stop 'too many bisections in root_bisect'
+      end
