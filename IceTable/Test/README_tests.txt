@@ -21,7 +21,7 @@ reads 'mapgrid2.dat' and outputs 'mapgrid3.dat', which should be identical to
 
 2. Equilibrium ice table for a list of sites using mars_mapii:
 
-make mars_mapi
+make mars_mapii
 
 ./a.out
 
