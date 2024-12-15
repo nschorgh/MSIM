@@ -1,4 +1,4 @@
 # Exclude files from GitHub language statistics
 NonEquilibrium/*.ph  	linguist-vendored
-NonEquilibirum/Test/*.ph  linguist-vendored
+NonEquilibrium/Test/*.ph  linguist-vendored
 IceTable/EquilMaps/Data/**	linguist-vendored
