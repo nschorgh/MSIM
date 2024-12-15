@@ -1,11 +1,10 @@
-subroutine conductionQ(nz,z,dt,Qn,Qnp1,T,ti,rhoc,emiss,Tsurf, &
-     &     Fgeotherm,Fsurf)
-!***********************************************************************
-!   conductionQ:  program to calculate the diffusion of temperature 
-!                 into the ground and thermal emission at the surface 
-!                 with variable thermal properties on irregular grid
-!   Crank-Nicolson scheme, flux conservative
-!                          uses Samar's radiation formula
+subroutine cranknQ(nz,z,dt,Qn,Qnp1,T,ti,rhoc,emiss,Tsurf,Fgeotherm,Fsurf)
+!************************************************************************
+!   cranknQ:  program to calculate the diffusion of temperature  into the
+!             ground and thermal emission at the surface with variable
+!             thermal properties on irregular grid
+!   Crank-Nicolson scheme, flux conservative, uses Samar's radiation formula
+!  
 !   Eqn: rhoc*T_t = (k*T_z)_z 
 !   BC (z=0): Q(t) + kT_z = em*sig*T^4
 !   BC (z=L): heat flux = Fgeotherm
@@ -30,39 +29,40 @@ subroutine conductionQ(nz,z,dt,Qn,Qnp1,T,ti,rhoc,emiss,Tsurf, &
 !         k(i), rhoc(i), ti(i) are midway between z(i-1) and z(i)
 !     
 !   originally written by Samar Khatiwala, 2001
-!   extended to variable thermal properties
-!         and irregular grid by Norbert Schorghofer
-!   added predictor-corrector 9/2019  
+!   extended to variable thermal properties and
+!         irregular grid by Norbert Schorghofer
+!   added predictor-corrector 9/2019
+!   switched over to Volterra predictor, 10/2024, -norbert  
 !***********************************************************************
 
   implicit none
-  real*8, parameter :: sigSB=5.6704d-8
+  real(8), parameter :: sigSB=5.6704d-8
   
   integer, intent(IN) :: nz
-  real*8, intent(IN) :: z(nz), dt, Qn, Qnp1, ti(nz),rhoc(nz)
-  real*8, intent(IN) :: emiss, Fgeotherm
-  real*8, intent(INOUT) :: T(nz), Tsurf
-  real*8, intent(OUT) :: Fsurf
-  integer i, iter
-  real*8 k(nz), k1, alpha(nz), gamma(nz), Tr
-  real*8 a(nz), b(nz), c(nz), r(nz), Told(nz)
-  real*8 arad, brad, ann, annp1, bn, buf, dz, beta
+  real(8), intent(IN) :: z(nz), dt, Qn, Qnp1, ti(nz),rhoc(nz)
+  real(8), intent(IN) :: emiss, Fgeotherm
+  real(8), intent(INOUT) :: T(nz), Tsurf
+  real(8), intent(OUT) :: Fsurf
+  integer i
+  real(8) k(nz), k1dz, alpha(nz), gamma(nz), Tr
+  real(8) a(nz), b(nz), c(nz), r(nz)
+  real(8) arad, brad, ann, annp1, bn, buf, dz, beta
+  !real(8) seb, Tpred
   
   ! set some constants
-  k(:) = ti(:)**2/rhoc(:) ! thermal conductivity
+  k(:) = ti(:)**2 / rhoc(:) ! thermal conductivity
   dz = 2.*z(1)
-  beta = dt/rhoc(1)/(2.*dz**2)   ! assumes rhoc(0)=rhoc(1)
+  beta = dt / rhoc(1) / (2.*dz**2)   ! assumes rhoc(0)=rhoc(1)
   alpha(1) = beta*k(2)
   gamma(1) = beta*k(1)
   do i=2,nz-1
-     buf = dt/(z(i+1)-z(i-1))
-     alpha(i) = 2.*k(i+1)*buf/(rhoc(i)+rhoc(i+1))/(z(i+1)-z(i))
-     gamma(i) = 2.*k(i)*buf/(rhoc(i)+rhoc(i+1))/(z(i)-z(i-1))
-  enddo
-  buf = dt/(z(nz)-z(nz-1))**2
-  gamma(nz) = k(nz)*buf/(2*rhoc(nz)) ! assumes rhoc(nz+1)=rhoc(nz)
+     buf = 2.*dt / (rhoc(i)+rhoc(i+1)) / (z(i+1)-z(i-1))
+     alpha(i) = k(i+1) * buf / (z(i+1)-z(i))
+     gamma(i) = k(i) * buf / (z(i)-z(i-1))
+  end do
+  gamma(nz) = dt * k(nz) / (2*rhoc(nz)) / (z(nz)-z(nz-1))**2
   
-  k1 = k(1)/dz
+  k1dz = k(1)/dz
   
   ! elements of tridiagonal matrix
   a(:) = -gamma(:)   !  a(1) is not used
@@ -70,44 +70,75 @@ subroutine conductionQ(nz,z,dt,Qn,Qnp1,T,ti,rhoc,emiss,Tsurf, &
   c(:) = -alpha(:)   !  c(nz) is not used
   b(nz) = 1. + gamma(nz)
 
+  !Volterra predictor (optional)
+  !Fsurf = - k(1) * ( T(1)-Tsurf ) / z(1)  ! heat flux
+  !seb = -Fsurf -emiss*sigSB*Tsurf**4 + (2*Qnp1 + Qn)/3.
+  !Tpred = Tsurf + seb / ( sqrt(pi/(4.*dt))*ti(1) + 8./3.*emiss*sigSB*Tsurf**3 )
+  !Tr = (Tsurf+Tpred)/2.  ! better reference temperature
+  
   Tr = Tsurf            ! 'reference' temperature
-  iter = 0
-  Told(:) = T(:)
-30 continue  ! in rare case of iterative correction
 
   ! Emission
   arad = -3.*emiss*sigSB*Tr**4
   brad = 2.*emiss*sigSB*Tr**3
-  ann = (Qn-arad)/(k1+brad)
-  annp1 = (Qnp1-arad)/(k1+brad)
-  bn = (k1-brad)/(k1+brad)
+  ann = (Qn-arad) / (k1dz+brad)
+  annp1 = (Qnp1-arad) / (k1dz+brad)
+  bn = (k1dz-brad) / (k1dz+brad)
   b(1) = 1. + alpha(1) + gamma(1) - gamma(1)*bn
   
   ! Set RHS         
   r(1) = gamma(1)*(annp1+ann) + &
        &     (1.-alpha(1)-gamma(1)+gamma(1)*bn)*T(1) + alpha(1)*T(2)
-  do concurrent (i=2:nz-1)
-     r(i) = gamma(i)*T(i-1) + (1.-alpha(i)-gamma(i))*T(i)+ alpha(i)*T(i+1)
-  enddo
+  do i=2,nz-1
+     r(i) = gamma(i)*T(i-1) + (1.-alpha(i)-gamma(i))*T(i) + alpha(i)*T(i+1)
+  end do
   r(nz) = gamma(nz)*T(nz-1) + (1.-gamma(nz))*T(nz) &
-       &     + dt/rhoc(nz)*Fgeotherm/(z(nz)-z(nz-1)) ! assumes rhoc(nz+1)=rhoc(nz)
+       &     + dt/rhoc(nz)*Fgeotherm/(z(nz)-z(nz-1))
 
   ! Solve for T at n+1
   call tridag(a,b,c,r,T,nz) ! update by tridiagonal inversion
   
   Tsurf = 0.5*(annp1 + bn*T(1) + T(1)) ! (T0+T1)/2
 
-  ! iterative predictor-corrector
-  if ((Tsurf > 1.2*Tr .or. Tsurf < 0.8*Tr) .and. iter<10) then  ! linearization error expected
-     ! redo until Tr is within 20% of new surface temperature
-     ! (under most circumstances, the 20% threshold is never exceeded)
-     iter = iter+1
-     Tr = sqrt(Tr*Tsurf)  ! linearize around an intermediate temperature
-     T(:) = Told(:)
-     goto 30
-  endif
-  !if (iter>=5) print *,'consider taking shorter time steps',iter
-  !if (iter>=10) print *,'warning: too many iterations'
+  Fsurf = - k(1) * (T(1)-Tsurf) / z(1) ! heat flux into surface
+end subroutine cranknQ
+
+
+
+subroutine conductionQ(nz,z,dt,Qn,Qnp1,T,ti,rhoc,emiss,Tsurf,Fgeotherm,Fsurf)
+!***********************************************************************
+!   conductionQ:  wrapper for cranknQ, which improves stability
+!   Arguments and restrictions are the same as for subroutine cranknQ above.
+!   created wrapper using flux smoothing 12/2023  
+!***********************************************************************
+  implicit none
+  integer, intent(IN) :: nz
+  real(8), intent(IN) :: z(nz), dt, Qn, Qnp1, ti(nz),rhoc(nz)
+  real(8), intent(IN) :: emiss, Fgeotherm
+  real(8), intent(INOUT) :: T(nz), Tsurf
+  real(8), intent(OUT) :: Fsurf
+  integer, parameter :: Ni=5  ! for flux smoothing
+  integer j
+  real(8) Tsurfold, Told(nz), Qartiold, Qarti, avFsurf
+
+  Tsurfold = Tsurf
+  Told(:) = T(:)
   
-  Fsurf = - k(1)*(T(1)-Tsurf)/z(1) ! heat flux into surface
+  call cranknQ(nz,z,dt,Qn,Qnp1,T,ti,rhoc,emiss,Tsurf,Fgeotherm,Fsurf)
+  
+  ! artificial flux smoothing
+  if ( Tsurf>1.2*Tsurfold .or. Tsurf<0.8*Tsurfold ) then  ! linearization error
+     Tsurf = Tsurfold
+     T(1:nz) = Told(1:nz)
+     avFsurf = 0.
+     do j=1,Ni
+        Qartiold = ( (Ni-j+1)*Qn + (j-1)*Qnp1 ) / Ni
+        Qarti    = ( (Ni-j)*Qn + j*Qnp1 ) / Ni
+        call cranknQ(nz,z,dt/Ni,Qartiold,Qarti,T,ti,rhoc,emiss,Tsurf, &
+             & Fgeotherm,Fsurf)
+        avFsurf = avFsurf + Fsurf
+     end do
+     Fsurf = avFsurf/Ni
+  endif
+
 end subroutine conductionQ
