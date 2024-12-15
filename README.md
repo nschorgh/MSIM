@@ -57,7 +57,7 @@ In folder `MarsThermal/`
 
 This dynamical model of ice evolution goes beyond the concept of the equilibrium ice table and calculates the amount of ice lost from or gained within the porous subsurface as a result of vapor exchange with the atmosphere. To accomplish that, without the computationally slow approach of explicitly solving the nonlinear vapor transport equations, it uses time-averaged transport equations. This numerical method involves some complexities and is described in a dedicated paper by [Schorghofer (2010)](http://dx.doi.org/10.1016/j.icarus.2010.03.022).  
 
-In folder `Dynamical/`  
+In folder `NonEquilibrium/`  
 
 
 ---
