@@ -3,8 +3,9 @@ Log of major changes (going back to times before git version control)
 
 Note: Changes are already logged on GitHub. This file originates from times before GitHub, and I still maintain it to describe changes now and then.
 
+15 Dec 2024: Release v1.2.2  first open-source version of MSIM
 
-Dec 2024: implemented alternatives to julday.for and tridag.for. I'm getting close to declaring all of MSIM open-source.
+Dec 2024: implemented alternatives to julday.for and tridag.for
 
 15 Apr 2023: Release v1.2.1  doi:10.5281/zenodo.7832269
 Major reorganization of repository since last release, but few changes in functionality.
