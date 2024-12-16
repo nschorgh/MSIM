@@ -8,7 +8,7 @@ mars_thermal1d.f: (main program)
 	1D diffusion of temperature for Mars; prototype example of how to call
 	conductionQ and conductionT with seasonal CO2 frost cover
 
-mars_thermal2p.f: (main program)
+mars_thermal2p.f90: (main program)
 	1D diffusion of temperature for Mars for planar slope
 
 input.par:
@@ -37,11 +37,13 @@ adsorption.f:
 
 
 
-insol_driver.f90: (simple main program)
-  	insolation (incoming solar radiation) over the past 20 Myr
+insol_driver.f90: (main program)
+  	insolation (incoming solar radiation) over the past 20 Myr, in steps of
+	1000 yaers as the orbital and spin configuration of Mars changes.
 
 tempr_driver.f90: (main program)
-  	temperatures over the past 20 Myr
+  	temperatures over the past 20 Myr; newly equilibrated every 1000 years
+	as the orbital and spin configuration of Mars changes.
 
 lats.milank:
 	example input file for tempr_driver.f90
