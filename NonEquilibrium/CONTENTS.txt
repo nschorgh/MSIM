@@ -1,7 +1,8 @@
 NonEquilibrium/
 
-M-SIM Collection: Fast Asynchronously Coupled Model of Subsurface-Atmosphere Exchange
-=====================================================================================
+Mars Subsurface Ice Model (M-SIM) Collection:
+Fast Asynchronously Coupled Model of Subsurface-Atmosphere Exchange
+===================================================================
 
 
 fast_modules.f90:
@@ -9,7 +10,7 @@ fast_modules.f90:
 	Fortran modules
 
 fast_subs_univ.f90:
-	asynchronously coupled routines for growth and depletion of subsurface ice, 
+	asynchronously coupled routines for growth and depletion of subsurface ice,
 	general subroutines
 
 fast_subs_exper.f90:

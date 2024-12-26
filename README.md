@@ -21,6 +21,7 @@ As far as I am aware, it is still the fastest Mars thermal model available.
 The orbit of Mars can be for the present-day or the past. The standard configuration is for a horizontal unobstructed surface, but planar slopes can also be modeled.  
 
 In folder `MarsThermal/`  
+`IceTable/EqualMaps/` contains data produced with this model.  
 *Documentation: [MSIM_Methods](https://raw.githubusercontent.com/nschorgh/MSIM/main/MSIM_Methods.pdf) Part 1*  
 *Documentation: [Schörghofer & Khatiwala (2024)](https://doi.org/10.3847/PSJ/ad4351)*
 
@@ -41,16 +42,7 @@ Documentation: [Schorghofer & Aharonson (2005), Appendix B](https://doi.org/10.1
 The theory of subsurface-atmosphere vapor exchange leads to the concept of an equilibrium ice table, a depth where the (time-averaged) saturation vapor pressure of H<sub>2</sub>O matches the (time-averaged) vapor density in the atmosphere immediately above the surface. A Mars thermal model is run until equilibrated, and then annual mean vapor densities are evaluated to determine whether and at what depth a vapor equilibrium exists. Ice changes the thermal properties of the ground, so the thermal model is re-run multiple times to determine the final depth of the equilibrium ice table.  
 
 In folder `IceTable/`   
-`IceTable/EqualMaps/` contains data produced with this model.  
 *Documentation: [Schorghofer & Aharonson (2005)](https://doi.org/10.1029/2004JE002350)*  
-
-
-### Mars Long-Term Thermal Model
-
-This is also a Mars thermal model, but it is typically re-run every 1000 years over millions of years as the orbital and spin configuration of Mars changes. `insol_driver.f90` evaluates only the annual mean insolation (incoming solar radiation), whereas `tempr_driver.f90` also calculates temperatures by solving the heat equation in the subsurface.  
-
-In folder `MarsThermal/`  
-`MarsThermal/MilankOutput/` (surface temperatures from last 21Myr)  
 
 
 ### Fast (asynchronously-coupled) Method for Subsurface Ice Dynamics

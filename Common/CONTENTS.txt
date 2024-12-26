@@ -63,4 +63,5 @@ Test/
 
 NOTE
 
-C, Matlab, and Python versions of conductionQ and conductionT are available in another repository.
+C, Matlab, and Python versions of conductionQ and conductionT are available in
+another repository.
