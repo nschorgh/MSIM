@@ -41,7 +41,7 @@ Documentation: [Schorghofer & Aharonson (2005), Appendix B](https://doi.org/10.1
 
 The theory of subsurface-atmosphere vapor exchange leads to the concept of an equilibrium ice table, a depth where the (time-averaged) saturation vapor pressure of H<sub>2</sub>O matches the (time-averaged) vapor density in the atmosphere immediately above the surface. A Mars thermal model is run until equilibrated, and then annual mean vapor densities are evaluated to determine whether and at what depth a vapor equilibrium exists. Ice changes the thermal properties of the ground, so the thermal model is re-run multiple times to determine the final depth of the equilibrium ice table.  
 
-In folder `IceTable/`
+In folder `IceTable/`  
 `IceTable/EqualMaps/` contains data produced with this model.  
 *Documentation: [Schorghofer & Aharonson (2005)](https://doi.org/10.1029/2004JE002350)*  
 
