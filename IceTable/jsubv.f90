@@ -108,7 +108,7 @@ subroutine jsubv(NS, zdepth, latitude, albedo0, thIn, pfrost, nz, &
   do k=1,NS
      call setgrid(nz,z(:,k),zmax,zfac)
      call smartgrid(nz,z(:,k),zdepth(k),thIn,rhoc,icefrac,ti(:,k),rhocv(:,k),1,zero)
-     if (mode==0 .and. outf) write(30,'(999(f8.5,1x))') z(1:nz,k)
+     if (mode==0 .and. outf) write(30,'(*(f8.5,1x))') z(1:nz,k)
      if (zdepth(k)<=0 .or. zdepth(k)>=z(nz,k)) then  ! no ice
         i0(k) = nz
      else  ! find first grid point in ice

@@ -108,7 +108,7 @@ subroutine jsub(zdepth, latitude, albedo0, thIn, pfrost, nz, &
   call smartgrid(nz,z,zdepth,thIn,rhoc,icefrac,ti,rhocv,1,NULL)
   !call smartgrid(nz,z,zdepth,thIn,rhoc,NULL,ti,rhocv,2,icefrac)
   !call smartgrid(nz,z,zdepth,thIn,rhoc,NULL,ti,rhocv,3,NULL)
-  if (mode==0) write(30,'(999(f8.5,1x))') (z(i),i=1,nz)
+  if (mode==0) write(30,'(*(f8.5,1x))') (z(i),i=1,nz)
   
   time = 0.
   tdays = time*(marsDay/earthDay) ! parenthesis may improve roundoff
@@ -182,9 +182,9 @@ subroutine jsub(zdepth, latitude, albedo0, thIn, pfrost, nz, &
      rhosatav0 = rhosatav0/nm
      !if (avrho1pre>=0.) rhoavs=avrho1pre
      Tmean1 = Tmean1/nm
-     !write(31,'(999(f6.2,1x))') (Tpeak(i),i=1,nz)
-     !write(32,'(999(f6.2,1x))') (Tlow(i),i=1,nz)
-     !write(35,'(999(g10.4,1x))') (rhosatav(i),i=1,nz)
+     !write(31,'(*(f6.2,1x))') (Tpeak(i),i=1,nz)
+     !write(32,'(*(f6.2,1x))') (Tlow(i),i=1,nz)
+     !write(35,'(*(g10.4,1x))') (rhosatav(i),i=1,nz)
      if (zdepth<=0 .or. zdepth>=z(nz)) then
         avdrho = rhosatav(nz)-rhoavs ! no ice
      else
