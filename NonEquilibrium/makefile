@@ -3,7 +3,7 @@
 # make FC=ifort FFLAGS='-O2 -warn all' LFLAGS='-O2 -warn all'
 
 FC = gfortran
-FFLAGS = -O2 -Wall
+FFLAGS = -O2 -Wall -std=f2003
 LFLAGS = -O2 -Wall
 
 #FC = ifort
@@ -40,10 +40,6 @@ mars_fast: fast_modules.o mars_fast.o fast_subs_univ.o fast_subs_mars.o \
 	fast_subs_univ.o $(SR)flux_mars.o $(SR)conductionQ.o $(SR)psvco2.o \
 	$(SR)generalorbit.o fast_subs_mars.o -o $@
 
-
-
-%.o:	%.f makefile
-	$(FC) $(FFLAGS) -c $<
 
 %.o:	%.f90 makefile
 	$(FC) $(FFLAGS) -c $<

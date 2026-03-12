@@ -14,11 +14,13 @@ The MSIM program collection contains:
 
 ### Mars Thermal Model
 
-This model calculates realistic surface temperatures for Mars. The heat equation is solved in the top few meters of the subsurface, using direct solar energy and sky irradiance as energy inputs.  The surface energy balance also includes the latent heat of CO<sub>2</sub> frost. 
+This model calculates realistic surface temperatures for Mars. The heat equation is solved in the top few meters of the subsurface, using direct solar energy and sky irradiance as energy inputs. The surface energy balance also includes the latent heat of CO<sub>2</sub> frost. 
 The finite-difference method is flux-conservative even on an irregularly spaced grid and the thermal properties of the soil can vary with depth and time.
 The solver for the one-dimensional heat equation is semi-implicit, which implies that the size of the time step is not limited by the spatial discretization, as it would be for simpler heat equation solvers.
 As far as I am aware, it is still the fastest Mars thermal model available. 
 The orbit of Mars can be for the present-day or the past. The standard configuration is for a horizontal unobstructed surface, but planar slopes can also be modeled.  
+
+Speed benchmark for `mars_thermal1d` (without the last two write statements): 80 grid points; 668,600 time steps (100 steps per sol for 10 Mars years); finished in 0.65 seconds; gfortran 13.3.0, Intel Xeon w5-2545, executed on single core.  
 
 In folder `MarsThermal/`  
 `MarsThermal/MilankOutput/` contains surface temperatures from last 21Myr.  
