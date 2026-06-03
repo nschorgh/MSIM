@@ -69,7 +69,7 @@ program mars_mapi2p
   outfile = 'mapgrid2.'//line_nr_string
 
   if (latitude>=0.) then    ! northern hemisphere
-     patm = 700. ! Tco2frost = 148 K 
+     patm = 700. ! Tco2frost = 148 K
   else                      ! southern hemisphere
      patm = 400. ! Tco2frost = 145 K
   endif
@@ -96,7 +96,7 @@ program mars_mapi2p
   ! Empirical relation from Mellon & Jakosky:
   rhoc = 800.*(150.+100.*sqrt(34.2+0.714*thIn))
   delta = thIn/rhoc*sqrt(marsDay/pi) ! diurnal skin depth
-  zmax = 5.*26.*delta 
+  zmax = 5.*26.*delta
   pfrost = psv(Tfrost)
   Tb(1) = -1.e32
 
@@ -164,10 +164,10 @@ subroutine root_bisect_v(NS,x1,x2,xacc,fmid, &
      &     latitude,albedo0,thIn,pfrost,nz,rhoc,fracIR,fracDust,patm, &
      &     Fgeotherm,dt,zfac,icefrac,SlopeAngle,azFac,zdepth)
 !***********************************************************************
-! finds roots with bisection method where a root exists
+! finds roots with bisection method for locations on planar slope (NS>1)
 !
 ! first slope is special
-!                      ice depth must be contained in x1(1) and x2(1)
+!                      SlopeAngle(1) = 0.
 !                      if -9999 set xmid=x2(2) = zmax, then leave constant 
 !                               x1(1) cannot be overwritten, that's okay
 !                               return zdepth(1)=-9999
@@ -198,9 +198,9 @@ subroutine root_bisect_v(NS,x1,x2,xacc,fmid, &
   real(8), intent(OUT) :: zdepth(NS)
   real(8), intent(IN) :: pfrost,rhoc,fracIR,fracDust,Fgeotherm,dt
   real(8), intent(IN) :: zfac,icefrac,SlopeAngle(NS),azFac(NS),patm
-  INTEGER, PARAMETER :: JMAX=30
-  INTEGER j, k
-  REAL(8), dimension(NS) :: dx,f,xmid,Tb,xlower,xupper,fupper,flower
+  integer, parameter :: JMAX=30
+  integer j, k
+  real(8), dimension(NS) :: dx,f,xmid,Tb,xlower,xupper,fupper,flower
   real(8) zmax
   
   zmax = x2(2)
@@ -218,10 +218,10 @@ subroutine root_bisect_v(NS,x1,x2,xacc,fmid, &
      zdepth(1) = x1(1)
   endif
 
-  ! all other slopes (index 2:NS)
+  ! all other slopes (indices 2:NS)
   dx = 0.  ! satisfies accuracy requirement
   do k=2,NS
-     if(fmid(k)>0.) then ! case I: ice unstable at bottom
+     if (fmid(k)>0.) then ! case I: ice unstable at bottom
         zdepth(k) = -9999.
         xmid(k) = zmax
      end if
