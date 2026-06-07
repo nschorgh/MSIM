@@ -17,10 +17,10 @@ program mars_mapi2p
   real(8), parameter :: marsDay=88775.244
   
   integer nz, job_nr, j, line_nr, k
-  real(8) dt, zmax, zfac, zdepth0, icefrac, zacc, zdepth0v(1)
+  real(8) dt, zmax, zfac, zdepth0, icefrac, zacc
   real(8) latitude, thIn, albedo0, fracIR, fracDust, delta
   real(8) Fgeotherm, rhoc, lon, Tfrost, pfrost, slpd, azFacd, patm
-  real(8) slp(NS), azFac(NS), zdepth(NS), avdrho(NS), Tb(NS), zz(NS), zerov(1)
+  real(8) slp(NS), azFac(NS), zdepth(NS), avdrho(NS), Tb(NS), zz(NS)
   real(8), external :: psv
   character(40) infile, outfile
   character(10) line_nr_string, job_nr_string
@@ -79,7 +79,7 @@ program mars_mapi2p
   if (NS==1)  slp(1) = 0.
   if (NS==2)  slp(1:2) = (/ zero, slpd /)*d2r
   if (NS>2) then
-     slp=-9999
+     slp=-9999.
      ! first slope MUST be zero; length of the list must be NS
      slp = (/ 0., 10., 20., 30., 40., 50., 60., 70., 80., 90. /)
      if (minval(slp)<0.) stop 'inappropriate slopes or wrong NS'
@@ -100,27 +100,7 @@ program mars_mapi2p
   pfrost = psv(Tfrost)
   Tb(1) = -1.e32
 
-  print *,'ice depth on flat slope ...'
-  zerov = spread(zero,1,1)  ! new fortran restriction where rank(1)/=scalar
-  call jsubv(1, spread(zmax,1,1), latitude*d2r, albedo0, thIn, pfrost, &
-       &     nz/2, rhoc, fracIR, fracDust, patm, Fgeotherm, 2.*dt, zfac, &
-       &     icefrac, zerov, zerov, 1, Tb(1), avdrho(1))
-  call jsubv(1, spread(zmax,1,1), latitude*d2r, albedo0, thIn, pfrost, &
-       &     nz,   rhoc, fracIR, fracDust, patm, Fgeotherm,    dt, zfac, &
-       &     icefrac, zerov, zerov, 0, Tb(1), avdrho(1))
-  print *, 'ice depth: ','  rho_ice-rho_surf'
-  print *, zmax,'#',avdrho(1)
-  if (avdrho(1)>=0.) then   ! no ice
-     zdepth = -9999.
-  else
-     zdepth0v = zdepth0
-     call root_bisect_v(1, spread(delta/4.,1,1), spread(zmax,1,1), zacc, &
-          &    avdrho(1), latitude*d2r, albedo0, thIn, pfrost, nz, rhoc, &
-          &    fracIR, fracDust, patm, Fgeotherm, dt, zfac, icefrac, zerov, &
-          &    zerov, zdepth0v)
-     zdepth0 = zdepth0v(1)
-  endif
-  print *,'Equilibrium ice table depth on flat slope = ',zdepth0
+  print *,'Ice table depth on flat slope = ',zdepth0
 
   print *,'ice depth on all other slopes ...'
   Tb(:) = -1.e32
@@ -168,13 +148,8 @@ subroutine root_bisect_v(NS,x1,x2,xacc,fmid, &
 !
 ! first slope is special
 !                      SlopeAngle(1) = 0.
-!                      if -9999 set xmid=x2(2) = zmax, then leave constant 
-!                               x1(1) cannot be overwritten, that's okay
-!                               return zdepth(1)=-9999
-!                      if finite set xmid, then leave constant
-!                               return zdepth(1)=x1(1)
-!                      not clear what would happen if called with NS=1
-!                               will stop
+!                      zdepth(1) is set from input, assign x1=x2=zdepth
+!                      will immediately stop for NS=1
 !
 ! fupper>0 & flower>0  case I: ice unstable top and bottom
 !                      set xmid = zmax = x2(2), then leave constant
@@ -205,7 +180,7 @@ subroutine root_bisect_v(NS,x1,x2,xacc,fmid, &
   
   zmax = x2(2)
 
-  ! flat slope (index 1)
+  ! flat slope (index 1), use zdepth from input
   if (x1(1)/=x2(1)) stop 'root_bisect_v: incorrect input'
   if (NS<=1) stop 'root_bisect_v: NS needs to be larger than 1'
   if (x1(1)<0.) then
@@ -244,7 +219,7 @@ subroutine root_bisect_v(NS,x1,x2,xacc,fmid, &
      endif
   enddo
   if (maxval(f)<0.) return  ! ice stable at the uppermost location everywhere
-  if (minval(f*fmid)>=0.) stop 'root must be bracketed in root_bisection'
+  if (minval(f*fmid)>=0.) stop 'root must be bracketed in root_bisect_v'
   xupper=x1; fupper=f
   xlower=x2; flower=fmid
   do k=2,NS
@@ -252,7 +227,7 @@ subroutine root_bisect_v(NS,x1,x2,xacc,fmid, &
         zdepth(k) = x2(k)
         dx(k) = x1(k)-x2(k)
      end if
-     if (fmid(k)>0. .and. f(k)<0.) stop 'root_bisectionv: impossible case'
+     if (fmid(k)>0. .and. f(k)<0.) stop 'root_bisect_v: impossible case'
   enddo
   do j=1,JMAX
      do k=2,NS
@@ -294,5 +269,5 @@ subroutine root_bisect_v(NS,x1,x2,xacc,fmid, &
         return
      endif
   enddo
-  print *,'too many bisections in root_bisectionv'
+  print *,'too many bisections in root_bisect_v'
 end subroutine root_bisect_v
